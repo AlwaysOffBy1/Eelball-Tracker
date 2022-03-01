@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Eelball Throw List. Created 2/27/2022 10:15:44 AM-->
+<EelBall>
+	<Players>
+		<Username>EelGuyLIVE</Username>
+		<Username>republicofcongo</Username>
+		<Username>SchwamGames</Username>
+		<Username>ElementalityNJ</Username>
+	</Players>
+	<Throws>
+		<Throw ID="0">
+			<Date>
+				<Year>2022</Year>
+				<Month>2</Month>
+				<Day>27</Day>
+				<Time>10:15:44.3753524</Time>
+			</Date>
+			<Thrower>EelGuyLIVE</Thrower>
+			<Type>EELBall</Type>
+			<For>EelGuyLIVE</For>
+			<PaidBy>EelGuyLIVE</PaidBy>
+			<Result>Miss</Result>
+		</Throw>
+	</Throws>
+</EelBall>
