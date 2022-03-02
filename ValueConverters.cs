@@ -25,9 +25,20 @@ namespace EELBALL_TRACKER
     }
     internal class IsDatabaseSavingBrush : IValueConverter
     {
+        private Brush Hex2Brush(string hex)
+        {
+            return new SolidColorBrush(Color.FromRgb
+                (
+                    System.Convert.ToByte(hex.Substring(0,2), 16),
+                    System.Convert.ToByte(hex.Substring(2,2), 16),
+                    System.Convert.ToByte(hex.Substring(4,2), 16)
+                )
+            );
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Brush brush = (bool)value ? Brushes.Red : Brushes.Green;
+            Brush brush = (bool)value ? Hex2Brush("FF725F") : Hex2Brush("8CFF5F");
             return brush;
         }
 
@@ -56,6 +67,18 @@ namespace EELBALL_TRACKER
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+    internal class InvertBool : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return !(bool)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return !(bool)value;
         }
     }
 }

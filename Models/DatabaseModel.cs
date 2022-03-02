@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -18,12 +11,13 @@ namespace EELBALL_TRACKER.Models
     internal class DatabaseModel //I really didnt want to implement INotifyPropChanged here but couldnt figure a way to report when application is in the middle of saving so here we are.
     {
         public string FullPath;
-        private List<Throw> CacheArray;
+        private List<Throw> CacheList;
         private readonly int CacheSize = 5;
 
         public DatabaseModel()
         {
             FullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\EelBallData.xml";
+            CacheList = new List<Throw>();
             CheckForExistingDB();
         }
         private void CheckForExistingDB()
@@ -49,11 +43,11 @@ namespace EELBALL_TRACKER.Models
         }
         public void AppendDatabase(List<Throw> throws) //If theres enough data, add it to the XML database. Otherwise add it to the cache array. 
         {
-            CacheArray.AddRange(throws);
-            if (CacheArray.Count > CacheSize)
+            CacheList.AddRange(throws);
+            if (CacheList.Count > CacheSize)
             {
                 XDocument _doc = XDocument.Load(FullPath);
-                foreach (Throw t in throws)
+                foreach (Throw t in CacheList)
                 {
                     _doc.XPathSelectElement("EelBall/Throws").Add
                         (
@@ -61,7 +55,7 @@ namespace EELBALL_TRACKER.Models
                             new XElement("Date",
                                 new XElement("Month", t.ThrowTime.Month),
                                 new XElement("Day", t.ThrowTime.Day),
-                                new XElement("Time", t.ThrowTime.TimeOfDay)),
+                                new XElement("Time", t.ThrowTime.TimeOfDay.ToString())),
                             new XElement("Thrower", t.Thrower),
                             new XElement("Type", t.Type),
                             new XElement("For", t.For),
@@ -70,7 +64,6 @@ namespace EELBALL_TRACKER.Models
                             , new XAttribute("ID", t.ID))
                         );
                     _doc.Save(FullPath);
-                    Thread.Sleep(100);
                 }
             }
         }

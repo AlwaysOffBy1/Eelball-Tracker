@@ -8,10 +8,12 @@ using System.Windows.Input;
 namespace EELBALL_TRACKER.Models
 {
     //pulled directly from https://docs.telerik.com/data-access/quick-start-scenarios/wpf/quickstart-wpf-viewmodelbase-and-relaycommand
+    //Added <object> to action
     public class RelayCommand :ICommand
     {
         private Action<object> methodToExecute;
         private Func<bool> canExecuteEvaluator;
+        
 
         public RelayCommand(Action<object> methodToExecute, Func<bool> canExecuteEvaluator)
         {

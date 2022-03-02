@@ -24,6 +24,7 @@ MinWidth="530" MinHeight="255"
         <local1:IsDatabaseSaving x:Key="IsDatabaseSaving"/>
         <local1:IsDatabaseSavingBrush x:Key="IsDatabaseSavingBrush"/>
         <local1:ResultToBrush x:Key="ResultToBrush"/>
+        <local1:InvertBool x:Key="InvertBool"/>
     </Window.Resources>
 
     <DockPanel>
@@ -38,14 +39,14 @@ MinWidth="530" MinHeight="255"
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            <StatusBarItem Grid.Column="0" Background="{Binding Path=DatabaseModel.IsUpdating, Converter={StaticResource IsDatabaseSavingBrush}}">
-                <TextBlock Text="{Binding Path=DatabaseModel.IsUpdating, Converter={StaticResource IsDatabaseSaving}}"/>
+            <StatusBarItem Grid.Column="0" Background="{Binding Path=IsUsingIO, Converter={StaticResource IsDatabaseSavingBrush}}">
+                <TextBlock Text="{Binding Path=IsUsingIO, Converter={StaticResource IsDatabaseSaving}}"/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Right">
                 <TextBlock Text="TEST2"/>
             </StatusBarItem>
         </StatusBar>
-        <Grid Margin="15">
+        <Grid Margin="15" IsEnabled="{Binding Path=IsUsingIO, Converter={StaticResource InvertBool}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="44"/>
                 <RowDefinition/>
