@@ -15,21 +15,11 @@ using System.Xml.XPath;
 namespace EELBALL_TRACKER.Models
 {
 
-    internal class DatabaseModel: INotifyPropertyChanged //I really didnt want to implement INotifyPropChanged here but couldnt figure a way to report when application is in the middle of saving so here we are.
+    internal class DatabaseModel //I really didnt want to implement INotifyPropChanged here but couldnt figure a way to report when application is in the middle of saving so here we are.
     {
-        public string FullPath { get; private set; }
-        private bool isupdating { get; set; }
-        public bool IsUpdating { 
-            get 
-            {
-                return isupdating;
-            }
-            private set
-            { 
-                isupdating = value;
-                OnPropertyRaised("IsUpdating");
-            }
-        } //is there a better way to do this? (show that a file is being saved) Probably. 
+        public string FullPath;
+        private List<Throw> CacheArray;
+        private readonly int CacheSize = 5;
 
         public DatabaseModel()
         {
@@ -40,7 +30,6 @@ namespace EELBALL_TRACKER.Models
         {
             if (!File.Exists(FullPath))
             {
-                IsUpdating = true;
                 using (FileStream fs = File.Create(FullPath))
                 {
                     try
@@ -53,13 +42,16 @@ namespace EELBALL_TRACKER.Models
                     }
                 }
             }
-            IsUpdating = false;
         }
-        public async void AppendDatabase(List<Throw> throws) //Add data to the database. 
+        public void AppendDatabase(Throw t)
         {
-            IsUpdating = true;
-            
-            var task = Task.Run(() => {
+            AppendDatabase(new List<Throw> { t });
+        }
+        public void AppendDatabase(List<Throw> throws) //If theres enough data, add it to the XML database. Otherwise add it to the cache array. 
+        {
+            CacheArray.AddRange(throws);
+            if (CacheArray.Count > CacheSize)
+            {
                 XDocument _doc = XDocument.Load(FullPath);
                 foreach (Throw t in throws)
                 {
@@ -78,24 +70,8 @@ namespace EELBALL_TRACKER.Models
                             , new XAttribute("ID", t.ID))
                         );
                     _doc.Save(FullPath);
-                    Thread.Sleep(300);
+                    Thread.Sleep(100);
                 }
-            });
-            await task.ContinueWith(t =>
-            {
-                IsUpdating = false;
-                //If i want to report something finished
-            });
-            
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyRaised(string propertyname = null)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
             }
         }
     }

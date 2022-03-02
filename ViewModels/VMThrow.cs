@@ -61,9 +61,12 @@ namespace EELBALL_TRACKER
             );
 
         }
-        public void RecordResult(object stringSource)
+        public async void RecordResult(object stringSource)
         {
-            
+            await Task.Run(() => 
+            {
+                DatabaseModel.AppendDatabase(new Throw("a")); 
+            });
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
