@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -63,9 +64,11 @@ namespace EELBALL_TRACKER.Models
                             new XElement("Result", t.Result)
                             , new XAttribute("ID", t.ID))
                         );
-                    _doc.Save(FullPath);
                 }
+                _doc.Save(FullPath);
+                Thread.Sleep(100);
             }
+            Thread.Sleep(20);
         }
     }
 }

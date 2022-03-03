@@ -19,7 +19,7 @@ namespace EELBALL_TRACKER
         public Throw(string id)
         {
             Thrower = "EelGuyLIVE";
-            Type = "EelBall";
+            Type = "EELBALL";
             Result = "Miss";
             For = "Dr_Squekers";
             PaidBy = "republicofcongo";

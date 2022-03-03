@@ -15,13 +15,13 @@ namespace EELBALL_TRACKER
     internal class VMThrow : INotifyPropertyChanged
     {
         public Throw CurrentThrow { get;set; }
-        private ObservableCollection<Throw> outputThrows;
-        public ObservableCollection<Throw> OutputThrows {
-            get{return this.outputThrows;}
+        private ObservableCollection<Throw> throwsInDataGrid;
+        public ObservableCollection<Throw> ThrowsInDataGrid {
+            get{return this.throwsInDataGrid;}
             set
             {
-                OnPropertyRaised("OutputThrows");
-                this.outputThrows = value;
+                OnPropertyRaised("ThrowsInDataGrid");
+                this.throwsInDataGrid = value;
             } 
         }
         private ObservableCollection<string> contestants { get; set; }
@@ -48,7 +48,7 @@ namespace EELBALL_TRACKER
         public VMThrow()
         {
             CurrentThrow = new Throw("z");
-            OutputThrows = new ObservableCollection<Throw>();
+            ThrowsInDataGrid = new ObservableCollection<Throw>();
             Contestants = new ObservableCollection<string>();
             DatabaseModel = new DatabaseModel();
             cmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
@@ -65,17 +65,16 @@ namespace EELBALL_TRACKER
             IsUsingIO = true;
             Throw t = CurrentThrow;
             t.Result = (string)stringSource;
-            await RecordResultAsync(t);
+            ThrowsInDataGrid.Add(t);
+            IsUsingIO = !await RecordResultAsync(t);
             CurrentThrow = new Throw("b");
-
-            IsUsingIO = false;
-            
         }
-        private async Task RecordResultAsync(Throw t)
+        private async Task<bool> RecordResultAsync(Throw t)
         {
             await Task.Run(() => DatabaseModel.AppendDatabase(t));
+            return true;
         }
-        private void idk() { }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private void OnPropertyRaised(string propertyname = null)

@@ -23,7 +23,7 @@ MinWidth="530" MinHeight="255"
         </Style>
         <local1:IsDatabaseSaving x:Key="IsDatabaseSaving"/>
         <local1:IsDatabaseSavingBrush x:Key="IsDatabaseSavingBrush"/>
-        <local1:ResultToBrush x:Key="ResultToBrush"/>
+        <local1:ThrowToBrush x:Key="ThrowToBrush"/>
         <local1:InvertBool x:Key="InvertBool"/>
     </Window.Resources>
 
@@ -82,9 +82,9 @@ MinWidth="530" MinHeight="255"
                     <Border Grid.Column="1" Grid.Row="0" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
                         <StackPanel>
                             <Label Content="BALL" Grid.Column="1" Style="{StaticResource Header}" />
-                            <ComboBox Grid.Row="1" Grid.Column="1" Padding="2" IsEditable="True">
+                            <ComboBox Grid.Row="1" Grid.Column="1" Padding="2" IsEditable="True" Text="{Binding CurrentThrow.Type, Mode=TwoWay}">
                                 <ComboBoxItem Content="EELBALL"/>
-                                <ComboBoxItem Content="SUUUUUUUUUB"/>
+                                <ComboBoxItem Content="SUBBALL"/>
                             </ComboBox>
                         </StackPanel>
                     </Border>
@@ -124,7 +124,7 @@ MinWidth="530" MinHeight="255"
                         <DockPanel>
                             <Label DockPanel.Dock="Top" Content="HISTORY" Style="{StaticResource Header}"/>
                             <ScrollViewer HorizontalScrollBarVisibility="Visible">
-                                <DataGrid AutoGenerateColumns="False" RowHeight="25" Width="auto" CanUserDeleteRows="True"  ItemsSource="{Binding Path=OutputThrows}">
+                                <DataGrid AutoGenerateColumns="False" RowHeight="25" Width="auto" CanUserDeleteRows="True"  ItemsSource="{Binding Path=ThrowsInDataGrid}">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Time" Binding="{Binding ThrowTime, StringFormat=M/dd h:mm:ss}"/>
                                         <DataGridTextColumn Header="Thrower" Binding="{Binding Thrower}"/>
@@ -133,6 +133,24 @@ MinWidth="530" MinHeight="255"
                                         <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
                                         <DataGridTextColumn Header="Result" Binding="{Binding Result}"/>
                                     </DataGrid.Columns>
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <MultiBinding Converter="{StaticResource ThrowToBrush}">
+                                                        <Binding Path="Type"/>
+                                                        <Binding Path="Result"/>
+                                                    </MultiBinding>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="Green"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
                                 </DataGrid>
                             </ScrollViewer>
                         </DockPanel>

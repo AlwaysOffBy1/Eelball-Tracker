@@ -47,24 +47,36 @@ namespace EELBALL_TRACKER
             throw new NotImplementedException();
         }
     }
-    internal class ResultToBrush : IValueConverter
+    internal class ThrowToBrush : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value.ToString())
+            Color c1;
+            Color c2;
+            switch (values[0].ToString())
             {
-                case "Miss":
-                    return Brushes.Red;
-                case "In":
-                    return Brushes.Green;
-                case "Assassin":
-                    return Brushes.White;
+                case "EELBALL":
+                    c2 = Colors.Orange; break;
+                case "SUBBALL":
+                    c2 = Colors.Green; break;
+            }
+            switch (values[1].ToString())
+            {
+                case "MISS":
+                    c1 = Colors.Red;break;
+                case "CHALICE":
+                    c1 = Colors.Green;break;
+                case "ASS":
+                    c1 = Colors.White;break;
+                case "TODD":
+                    c1 = Colors.DarkCyan;break;
 
             }
-            throw new NotImplementedException();
+            
+            return new LinearGradientBrush(c2,c1,0);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
