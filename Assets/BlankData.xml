@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<!--Eelball Throw List. Created 2/27/2022 10:15:44 AM-->
 <EelBall>
+	<Throwers>
+		<Thrower>EelGuyLIVE</Thrower>
+		<Thrower>republicofcongo</Thrower>
+		<Thrower>GuppyMAGIK</Thrower>
+	</Throwers>
+	<Types>
+		<Type>EELBALL</Type>
+		<Type>SUBBALL</Type>
+	</Types>
 	<Players>
 		<Username>EelGuyLIVE</Username>
 		<Username>republicofcongo</Username>
@@ -11,9 +19,9 @@
 		<Throw ID="0">
 			<Date>
 				<Year>2022</Year>
-				<Month>2</Month>
-				<Day>27</Day>
-				<Time>10:15:44.3753524</Time>
+				<Month>3</Month>
+				<Day>3</Day>
+				<Time>7:39</Time>
 			</Date>
 			<Thrower>EelGuyLIVE</Thrower>
 			<Type>EELBall</Type>

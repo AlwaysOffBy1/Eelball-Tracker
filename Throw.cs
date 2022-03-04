@@ -1,20 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace EELBALL_TRACKER
 {
-    internal class Throw
+    internal class Throw : INotifyPropertyChanged
     {
-        public string Thrower { get; set; }
-        public string Type { get; set; }
-        public string For { get; set; }
-        public string PaidBy { get; set; }
-        public string Result { get; set; }
-        public DateTime ThrowTime { get; set; }
-        public string ID { get; set; }
+        //hate how bulky setting properties can be. Can i update the object in the VM so this can thin out? google didnt give a real answer
+        public string Thrower
+        {
+            get => _thrower;
+            set
+            {
+                _thrower = value;
+                OnPropertyRaised("Thrower");
+            }
+        }
+        private string _thrower;
+        public string Type
+        {
+            get => _type;
+            set
+            {
+                _type = value;
+                OnPropertyRaised("Type");
+            }
+        }
+        private string _type;
+        public string For
+        {
+            get => _for;
+            set
+            {
+                _for = value;
+                OnPropertyRaised("For");
+            }
+        }
+        private string _for;
+        public string PaidBy
+        {
+            get => _paidBy;
+            set
+            {
+                _paidBy = value;
+                OnPropertyRaised("PaidBy");
+            }
+        }
+        private string _paidBy;
+        public string Result
+        {
+            get => _result;
+            set
+            {
+                _result = value;
+                OnPropertyRaised("Result");
+            }
+        }
+        private string _result;
+        public DateTime ThrowTime
+        {
+            get => _throwTime;
+            set
+            {
+                _throwTime = value;
+                OnPropertyRaised("ThrowTime");
+            }
+        }
+        private DateTime _throwTime;
+        public string ID
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyRaised("ID");
+            }
+        }
+        private string _id;
 
         public Throw(string id)
         {
@@ -35,6 +97,15 @@ namespace EELBALL_TRACKER
             Result = result;
             ThrowTime = DateTime.Now;
             ID = id;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyRaised(string propertyname = null)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
+            }
         }
     }
 }

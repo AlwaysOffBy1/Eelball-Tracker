@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml.Linq;
@@ -12,14 +13,27 @@ namespace EELBALL_TRACKER.Models
     internal class DatabaseModel //I really didnt want to implement INotifyPropChanged here but couldnt figure a way to report when application is in the middle of saving so here we are.
     {
         public string FullPath;
+        public List<string> ThrowerList;
+        public List<string> TypeList;
+        public List<string> PlayerList;
         private List<Throw> CacheList;
         private readonly int CacheSize = 5;
+
+
+
 
         public DatabaseModel()
         {
             FullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\EelBallData.xml";
             CacheList = new List<Throw>();
             CheckForExistingDB();
+        }
+        private void GetUILists() //get all the throwers, ball types, and players from the XML
+        {
+            XDocument _doc = XDocument.Load(FullPath);
+            //TODO get throwers, ball types, and players. also this comment and the one above sort of read like a joke->punchline
+            
+            return;
         }
         private void CheckForExistingDB()
         {
@@ -33,7 +47,7 @@ namespace EELBALL_TRACKER.Models
                     }
                     catch (Exception ex)
                     {
-
+                        
                     }
                 }
             }

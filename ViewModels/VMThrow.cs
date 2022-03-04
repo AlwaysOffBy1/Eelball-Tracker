@@ -14,7 +14,19 @@ namespace EELBALL_TRACKER
 {
     internal class VMThrow : INotifyPropertyChanged
     {
-        public Throw CurrentThrow { get;set; }
+        private Throw currentThrow;
+        public Throw CurrentThrow
+        {
+            get
+            {
+                return currentThrow;
+            }
+            set
+            {
+                OnPropertyRaised("CurrentThrow");
+                currentThrow = value;
+            }
+        }
         private ObservableCollection<Throw> throwsInDataGrid;
         public ObservableCollection<Throw> ThrowsInDataGrid {
             get{return this.throwsInDataGrid;}
@@ -24,7 +36,7 @@ namespace EELBALL_TRACKER
                 this.throwsInDataGrid = value;
             } 
         }
-        private ObservableCollection<string> contestants { get; set; }
+        private ObservableCollection<string> contestants;
         public ObservableCollection<string> Contestants{
             get{return contestants;}
             set
@@ -33,7 +45,7 @@ namespace EELBALL_TRACKER
                 this.contestants = value;
             }
         }
-        public RelayCommand cmdRecordResult { get; set; }
+        public RelayCommand CmdRecordResult { get; set; }
         public DatabaseModel DatabaseModel { get; set; }
 
         private bool isUsingIO;
@@ -47,11 +59,11 @@ namespace EELBALL_TRACKER
 
         public VMThrow()
         {
-            CurrentThrow = new Throw("z");
+            CurrentThrow = new Throw("Test Thrower", "SUBBALL", "From", "By", "MISS", "a");
             ThrowsInDataGrid = new ObservableCollection<Throw>();
             Contestants = new ObservableCollection<string>();
             DatabaseModel = new DatabaseModel();
-            cmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
+            CmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
 
         }
         private bool ShouldCommandsBeActive() { return !IsUsingIO; }
