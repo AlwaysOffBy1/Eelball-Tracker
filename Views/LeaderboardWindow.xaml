@@ -1,0 +1,12 @@
+﻿<Window x:Class="EELBALL_TRACKER.Views.LeaderboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EELBALL_TRACKER.Views"
+        mc:Ignorable="d"
+        Title="LeaderboardWindow" Height="380" Width="375">
+    <Grid>
+
+    </Grid>
+</Window>

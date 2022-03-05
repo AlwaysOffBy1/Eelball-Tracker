@@ -16,7 +16,9 @@ namespace EELBALL_TRACKER.Models
         public List<string> ThrowerList;
         public List<string> TypeList;
         public List<string> PlayerList;
+        public int ThrowCount;
         private List<Throw> CacheList;
+
         private readonly int CacheSize = 5;
 
 
@@ -27,13 +29,48 @@ namespace EELBALL_TRACKER.Models
             FullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\EelBallData.xml";
             CacheList = new List<Throw>();
             CheckForExistingDB();
+            GetUILists();
         }
         private void GetUILists() //get all the throwers, ball types, and players from the XML
         {
             XDocument _doc = XDocument.Load(FullPath);
-            //TODO get throwers, ball types, and players. also this comment and the one above sort of read like a joke->punchline
-            
-            return;
+            if( _doc != null)
+            {
+                //holy dang LINQ is cool/hard
+                //Probably a better way to do this. like make the whole xml file up to throws an ienumerable, then run each querey on that ienumerable instead of the xdocument.
+                //but you know what? this list is never gonna be more than like 50 so i guess its ok to waste some millis
+                ThrowerList = _doc.Descendants("Throwers")
+                    .Where(i =>
+                    {
+                        string c = (string)i.Value;
+                        return c != null;
+                    })
+                    .Descendants("Thrower")
+                    .Select(a => a.Value)
+                    .ToList();
+
+                TypeList = _doc.Descendants("Types")
+                    .Where(i =>
+                    {
+                        string c = (string)i.Value;
+                        return c != null;
+                    })
+                    .Descendants("Type")
+                    .Select(a => a.Value)
+                    .ToList();
+
+                PlayerList = _doc.Descendants("Players")
+                    .Where(i =>
+                    {
+                        string c = (string)i.Value;
+                        return c != null;
+                    })
+                    .Descendants("Player")
+                    .Select(a => a.Value)
+                    .ToList();
+
+                ThrowCount = Int32.Parse(_doc.Descendants("TotalThrows").First().Value);
+            }   
         }
         private void CheckForExistingDB()
         {

@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <EelBall>
+	<TotalThrows>0</TotalThrows>
 	<Throwers>
 		<Thrower>EelGuyLIVE</Thrower>
-		<Thrower>republicofcongo</Thrower>
 		<Thrower>GuppyMAGIK</Thrower>
+		<Thrower>republicofcongo</Thrower>
 	</Throwers>
 	<Types>
 		<Type>EELBALL</Type>
 		<Type>SUBBALL</Type>
 	</Types>
 	<Players>
-		<Username>EelGuyLIVE</Username>
-		<Username>republicofcongo</Username>
-		<Username>SchwamGames</Username>
-		<Username>ElementalityNJ</Username>
+		<Player>EelGuyLIVE</Player>
+		<Player>republicofcongo</Player>
+		<Player>SchwamGames</Player>
+		<Player>ElementalityNJ</Player>
 	</Players>
 	<Throws>
 		<Throw ID="0">

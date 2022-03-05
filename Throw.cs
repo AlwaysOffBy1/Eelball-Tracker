@@ -67,7 +67,7 @@ namespace EELBALL_TRACKER
             }
         }
         private DateTime _throwTime;
-        public string ID
+        public int ID
         {
             get => _id;
             set
@@ -76,9 +76,9 @@ namespace EELBALL_TRACKER
                 OnPropertyRaised("ID");
             }
         }
-        private string _id;
+        private int _id;
 
-        public Throw(string id)
+        public Throw(int id)
         {
             Thrower = "EelGuyLIVE";
             Type = "EELBALL";
@@ -88,7 +88,7 @@ namespace EELBALL_TRACKER
             ThrowTime = DateTime.Now;
             ID = id;
         }
-        public Throw(string thrower, string type, string fr, string paidBy, string result, string id)
+        public Throw(string thrower, string type, string fr, string paidBy, string result, int id)
         {
             Thrower = thrower;
             Type = type;

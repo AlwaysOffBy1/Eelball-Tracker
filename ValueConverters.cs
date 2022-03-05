@@ -56,20 +56,20 @@ namespace EELBALL_TRACKER
             switch (values[0].ToString())
             {
                 case "EELBALL":
-                    c2 = Colors.Orange; break;
+                    c2 = Color.FromRgb(255,150,60); break;
                 case "SUBBALL":
-                    c2 = Colors.Green; break;
+                    c2 = Colors.LightGreen; break;
             }
             switch (values[1].ToString())
             {
                 case "MISS":
                     c1 = Colors.Red;break;
                 case "CHALICE":
-                    c1 = Colors.Green;break;
+                    c1 = Colors.LimeGreen;break;
                 case "ASS":
-                    c1 = Colors.White;break;
+                    c1 = Colors.Yellow;break;
                 case "TODD":
-                    c1 = Colors.DarkCyan;break;
+                    c1 = Colors.Cyan;break;
 
             }
             

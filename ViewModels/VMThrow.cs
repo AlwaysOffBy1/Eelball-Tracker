@@ -27,16 +27,38 @@ namespace EELBALL_TRACKER
                 currentThrow = value;
             }
         }
-        private ObservableCollection<Throw> throwsInDataGrid;
-        public ObservableCollection<Throw> ThrowsInDataGrid {
-            get{return this.throwsInDataGrid;}
+        public ObservableCollection<Throw> RecentThrows {
+            get{return this.recentThrows;}
             set
             {
-                OnPropertyRaised("ThrowsInDataGrid");
-                this.throwsInDataGrid = value;
+                OnPropertyRaised("RecentThrows");
+                this.recentThrows = value;
             } 
         }
-        private ObservableCollection<string> contestants;
+        private ObservableCollection<Throw> recentThrows;
+        public ObservableCollection<string> TypesOfBalls
+        {
+            get => typesOfBalls;
+            set
+            {
+                typesOfBalls = value;
+                OnPropertyRaised("TypesOfBalls");
+            }
+        }
+        private ObservableCollection<string> typesOfBalls;
+
+        public ObservableCollection<string> Throwers
+        {
+            get => throwers;
+            set
+            {
+                throwers = value;
+                OnPropertyRaised("Throwers");
+            }
+        }
+        private ObservableCollection<string> throwers;
+
+        public int ThrowCount;
         public ObservableCollection<string> Contestants{
             get{return contestants;}
             set
@@ -45,6 +67,7 @@ namespace EELBALL_TRACKER
                 this.contestants = value;
             }
         }
+        private ObservableCollection<string> contestants;
         public RelayCommand CmdRecordResult { get; set; }
         public DatabaseModel DatabaseModel { get; set; }
 
@@ -59,27 +82,33 @@ namespace EELBALL_TRACKER
 
         public VMThrow()
         {
-            CurrentThrow = new Throw("Test Thrower", "SUBBALL", "From", "By", "MISS", "a");
-            ThrowsInDataGrid = new ObservableCollection<Throw>();
-            Contestants = new ObservableCollection<string>();
             DatabaseModel = new DatabaseModel();
+                Contestants = new ObservableCollection<string>(DatabaseModel.PlayerList);
+                TypesOfBalls = new ObservableCollection<string>(DatabaseModel.TypeList);
+                Throwers = new ObservableCollection<string>(DatabaseModel.ThrowerList);
+                ThrowCount = DatabaseModel.ThrowCount;
+                
+            RecentThrows = new ObservableCollection<Throw>();
+            CurrentThrow = new Throw(ThrowCount+1);
             CmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
 
         }
-        private bool ShouldCommandsBeActive() { return !IsUsingIO; }
+        private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
         public async void RecordResult(object stringSource)
         {
-            /*
-             * Ok I'm trying to use a different thread for IO, then bind a bool to that thread's completion
-             * When the IO thread has  started saving the file, the property IsUsingIO should be set to true
-             * When the IO thread has finished saving the file, the property IsUsingIO should be set to false
-             */
             IsUsingIO = true;
-            Throw t = CurrentThrow;
-            t.Result = (string)stringSource;
-            ThrowsInDataGrid.Add(t);
+            Throw t = new Throw
+                (
+                    CurrentThrow.Thrower,
+                    CurrentThrow.Type,
+                    CurrentThrow.For,
+                    CurrentThrow.PaidBy,
+                    (string)stringSource,
+                    CurrentThrow.ID
+                );
+            CurrentThrow.ID += 1;
+            RecentThrows.Add(t); //Is there a way to automatically add values to array without a call? Like a binding on the UI?
             IsUsingIO = !await RecordResultAsync(t);
-            CurrentThrow = new Throw("b");
         }
         private async Task<bool> RecordResultAsync(Throw t)
         {
