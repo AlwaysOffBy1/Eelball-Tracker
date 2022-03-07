@@ -20,16 +20,9 @@ namespace EELBALL_TRACKER
     /// </summary>
     public partial class MainWindow : Window
     {
-        VMThrow vMThrow;
-
         public MainWindow()
         {
-            TestStuff();
             InitializeComponent();
-        }
-        private void TestStuff()
-        {
-
         }
     }
 }

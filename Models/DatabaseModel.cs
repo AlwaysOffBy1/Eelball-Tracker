@@ -20,7 +20,7 @@ namespace EELBALL_TRACKER.Models
         private List<Throw> CacheList;
 
         private readonly int CacheSize = 5;
-
+        private XDocument Doc;
 
 
 
@@ -33,13 +33,12 @@ namespace EELBALL_TRACKER.Models
         }
         private void GetUILists() //get all the throwers, ball types, and players from the XML
         {
-            XDocument _doc = XDocument.Load(FullPath);
-            if( _doc != null)
+            if(Doc != null)
             {
                 //holy dang LINQ is cool/hard
                 //Probably a better way to do this. like make the whole xml file up to throws an ienumerable, then run each querey on that ienumerable instead of the xdocument.
                 //but you know what? this list is never gonna be more than like 50 so i guess its ok to waste some millis
-                ThrowerList = _doc.Descendants("Throwers")
+                ThrowerList = Doc.Descendants("Throwers")
                     .Where(i =>
                     {
                         string c = (string)i.Value;
@@ -49,7 +48,7 @@ namespace EELBALL_TRACKER.Models
                     .Select(a => a.Value)
                     .ToList();
 
-                TypeList = _doc.Descendants("Types")
+                TypeList = Doc.Descendants("Types")
                     .Where(i =>
                     {
                         string c = (string)i.Value;
@@ -59,7 +58,7 @@ namespace EELBALL_TRACKER.Models
                     .Select(a => a.Value)
                     .ToList();
 
-                PlayerList = _doc.Descendants("Players")
+                PlayerList = Doc.Descendants("Players")
                     .Where(i =>
                     {
                         string c = (string)i.Value;
@@ -69,8 +68,16 @@ namespace EELBALL_TRACKER.Models
                     .Select(a => a.Value)
                     .ToList();
 
-                ThrowCount = Int32.Parse(_doc.Descendants("TotalThrows").First().Value);
+                ThrowCount = Int32.Parse(Doc.Descendants("TotalThrows").First().Value);
             }   
+        }
+        private void SetUIList(string category, string value)
+        {
+            string subCategory = category.Substring(0, category.Length - 1); //This is really lazy. Throws => Throw. Throwers => Thrower. Players => Player. Maybe I should learn about custom references? 
+            Doc.XPathSelectElement("EelBall/" + category).Add
+                (
+                    new XElement(subCategory, value)
+                );
         }
         private void CheckForExistingDB()
         {
@@ -98,10 +105,9 @@ namespace EELBALL_TRACKER.Models
             CacheList.AddRange(throws);
             if (CacheList.Count > CacheSize)
             {
-                XDocument _doc = XDocument.Load(FullPath);
                 foreach (Throw t in CacheList)
                 {
-                    _doc.XPathSelectElement("EelBall/Throws").Add
+                    Doc.XPathSelectElement("EelBall/Throws").Add
                         (
                         new XElement("Throw",
                             new XElement("Date",
@@ -116,7 +122,8 @@ namespace EELBALL_TRACKER.Models
                             , new XAttribute("ID", t.ID))
                         );
                 }
-                _doc.Save(FullPath);
+                //XDocument does NOT implement IDisposable and uses xmlreader so simply saving without disposal is ok
+                Doc.Save(FullPath);
                 Thread.Sleep(100);
             }
             Thread.Sleep(20);

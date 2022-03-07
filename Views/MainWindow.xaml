@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EELBALL_TRACKER"
         mc:Ignorable="d"
-        xmlns:gif="http://wpfanimatedgif.codeplex.com" xmlns:local1="clr-namespace:EELBALL_TRACKER"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com" 
+        xmlns:local1="clr-namespace:EELBALL_TRACKER"
         Title="Eelball Tracker" Height="450" Width="910"
         Icon="/Assets/logo.png"
         
@@ -94,7 +95,8 @@ MinWidth="530" MinHeight="255"
                                 <TextBox DockPanel.Dock="Left" Width="120px"/>
                                 <Button DockPanel.Dock="Right" Content="Add" HorizontalAlignment="Stretch"/>
                             </DockPanel>
-                            <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Contestants}" SelectedValue="{Binding CurrentThrow.For}"/>
+                            <ListBox Name="lb_For" DockPanel.Dock="Top" ItemsSource="{Binding Contestants}" SelectedValue="{Binding CurrentThrow.For}">
+                            </ListBox>
                         </DockPanel>
                     </Border>
                     <!--#endregion-->
