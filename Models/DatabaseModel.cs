@@ -95,6 +95,7 @@ namespace EELBALL_TRACKER.Models
                     }
                 }
             }
+            Doc = XDocument.Load(FullPath);
         }
         public void AppendDatabase(Throw t)
         {

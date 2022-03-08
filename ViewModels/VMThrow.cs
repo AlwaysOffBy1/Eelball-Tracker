@@ -17,7 +17,6 @@ namespace EELBALL_TRACKER
         {
             get
             {
-                CurrentThrowFor = currentThrow.For;
                 return currentThrow;
             }
             set
@@ -27,16 +26,6 @@ namespace EELBALL_TRACKER
                 currentThrow = value;
             }
         }
-        public string CurrentThrowFor
-        {
-            get => _currentThrowFor;
-            set
-            {
-                _currentThrowFor = value;
-                OnPropertyRaised("CurrentThrowFor");
-            }
-        }
-        private string _currentThrowFor;
         public ObservableCollection<Throw> RecentThrows {
             get{return this.recentThrows;}
             set
@@ -102,13 +91,9 @@ namespace EELBALL_TRACKER
             RecentThrows = new ObservableCollection<Throw>();
             CurrentThrow = new Throw(ThrowCount+1);
             CmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
-            //CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
-            CurrentThrowFor = CurrentThrow.For;
+            CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
         }
-        public void SelectPaidBy(object stringSource)
-        {
-            CurrentThrow.PaidBy = (string)stringSource;
-        }
+        public void SelectPaidBy(object stringSource){ CurrentThrow.PaidBy = (string)stringSource;}
         private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
         private async void RecordResult(object stringSource)
         {
@@ -118,7 +103,7 @@ namespace EELBALL_TRACKER
                     CurrentThrow.Thrower,
                     CurrentThrow.Type,
                     CurrentThrow.For,
-                    CurrentThrowFor,
+                    CurrentThrow.PaidBy,
                     (string)stringSource,
                     CurrentThrow.ID
                 ); 
@@ -139,10 +124,6 @@ namespace EELBALL_TRACKER
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
-            }
-            if(propertyname == "For")
-            {
-                Console.WriteLine("YES");
             }
         }
     }
