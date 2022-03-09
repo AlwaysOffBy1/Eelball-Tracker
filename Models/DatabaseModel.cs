@@ -37,7 +37,7 @@ namespace EELBALL_TRACKER.Models
             {
                 //holy dang LINQ is cool/hard
                 //Probably a better way to do this. like make the whole xml file up to throws an ienumerable, then run each querey on that ienumerable instead of the xdocument.
-                //but you know what? this list is never gonna be more than like 50 so i guess its ok to waste some millis
+                //but you know what? this list is never gonna be more than like 50 so i guess its ok to waste some millis. gonna add TODO anyway for the OCD
                 ThrowerList = Doc.Descendants("Throwers")
                     .Where(i =>
                     {
@@ -71,14 +71,15 @@ namespace EELBALL_TRACKER.Models
                 ThrowCount = Int32.Parse(Doc.Descendants("TotalThrows").First().Value);
             }   
         }
-        private void SetUIList(string category, string value)
+        public void AppendUIList(string category, string value)
         {
-            string subCategory = category.Substring(0, category.Length - 1); //This is really lazy. Throws => Throw. Throwers => Thrower. Players => Player. Maybe I should learn about custom references? 
+            string subCategory = category.Substring(0, category.Length - 1); //This is really lazy. Throws => Throw. Throwers => Thrower. Players => Player. Maybe I should learn about custom references? Serialization?
             Doc.XPathSelectElement("EelBall/" + category).Add
                 (
                     new XElement(subCategory, value)
                 );
         }
+
         private void CheckForExistingDB()
         {
             if (!File.Exists(FullPath))

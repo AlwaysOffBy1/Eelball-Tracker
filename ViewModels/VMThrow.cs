@@ -12,7 +12,7 @@ namespace EELBALL_TRACKER
 {
     internal class VMThrow : INotifyPropertyChanged
     {
-        private Throw currentThrow;
+        
         public Throw CurrentThrow
         {
             get
@@ -26,6 +26,7 @@ namespace EELBALL_TRACKER
                 currentThrow = value;
             }
         }
+        private Throw currentThrow;
         public ObservableCollection<Throw> RecentThrows {
             get{return this.recentThrows;}
             set
@@ -82,20 +83,25 @@ namespace EELBALL_TRACKER
 
         public VMThrow()
         {
+            //Pull in data from XML file and add action listeners to the .add method.
             DatabaseModel = new DatabaseModel();
                 Contestants = new ObservableCollection<string>(DatabaseModel.PlayerList);
+                    Contestants.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(AddToObservableCollection);
                 TypesOfBalls = new ObservableCollection<string>(DatabaseModel.TypeList);
+                    TypesOfBalls.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(AddToObservableCollection);
                 Throwers = new ObservableCollection<string>(DatabaseModel.ThrowerList);
+                    Throwers.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(AddToObservableCollection);
                 ThrowCount = DatabaseModel.ThrowCount;
                 
             RecentThrows = new ObservableCollection<Throw>();
             CurrentThrow = new Throw(ThrowCount+1);
             CmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
             CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
+
         }
         public void SelectPaidBy(object stringSource){ CurrentThrow.PaidBy = (string)stringSource;}
         private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
-        private async void RecordResult(object stringSource)
+        private async void RecordResult(object stringSource) //TODO saw online NOT to do async voids, and instead use async Tasks. 
         {
             IsUsingIO = true;
             Throw t = new Throw
@@ -110,6 +116,10 @@ namespace EELBALL_TRACKER
             CurrentThrow.ID += 1;
             RecentThrows.Add(t); //Is there a way to automatically add values to array without a call? Like a binding on the UI?
             IsUsingIO = !await RecordResultAsync(t);
+        }
+        private void AddToObservableCollection(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+        {
+            MessageBox.Show(sender.ToString()); //TODO add UI to add items. 
         }
         private async Task<bool> RecordResultAsync(Throw t)
         {
