@@ -71,7 +71,7 @@ namespace EELBALL_TRACKER.Models
                 ThrowCount = Int32.Parse(Doc.Descendants("TotalThrows").First().Value);
             }   
         }
-        public void AppendUIList(string category, string value)
+        public void AppendCategoryList(string category, string value)
         {
             string subCategory = category.Substring(0, category.Length - 1); //This is really lazy. Throws => Throw. Throwers => Thrower. Players => Player. Maybe I should learn about custom references? Serialization?
             Doc.XPathSelectElement("EelBall/" + category).Add

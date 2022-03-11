@@ -26,6 +26,7 @@ MinWidth="530" MinHeight="255"
         </Style>
         <local1:IsDatabaseSaving x:Key="IsDatabaseSaving"/>
         <local1:IsDatabaseSavingBrush x:Key="IsDatabaseSavingBrush"/>
+        <local1:IsDatabaseSavingColor x:Key="IsDatabaseSavingColor"/>
         <local1:ThrowToBrush x:Key="ThrowToBrush"/>
         <local1:InvertBool x:Key="InvertBool"/>
         <Style x:Key="lb_design" TargetType="ListBoxItem">
@@ -43,6 +44,22 @@ MinWidth="530" MinHeight="255"
     </Window.Resources>
 
     <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="20px">
+            <MenuItem Header="File">
+                <MenuItem Header="Add">
+                    <MenuItem Header="Thrower"/>
+                    <MenuItem Header="Contestant"/>
+                    <MenuItem Header="Ball"/>
+                    <MenuItem Header="Result" IsEnabled="False"/>
+                </MenuItem>
+                <MenuItem Header="Save"/>
+                <Separator/>
+                <MenuItem Header="Quit"/>
+            </MenuItem>
+            <MenuItem Header="Debug">
+                <MenuItem IsCheckable="True" Header="DebugMode"/>
+            </MenuItem>
+        </Menu>
         <StatusBar DockPanel.Dock="Bottom" Height="25px">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -54,7 +71,13 @@ MinWidth="530" MinHeight="255"
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            <StatusBarItem Grid.Column="0" Background="{Binding Path=IsUsingIO, Converter={StaticResource IsDatabaseSavingBrush}}">
+            <StatusBarItem Grid.Column="0">
+                <StatusBarItem.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset=".5" Color="{Binding Path=IsUsingIO, Converter={StaticResource IsDatabaseSavingColor}}"/>
+                        <GradientStop Offset="1" Color="Transparent"/>
+                    </LinearGradientBrush>
+                </StatusBarItem.Background>
                 <TextBlock Text="{Binding Path=IsUsingIO, Converter={StaticResource IsDatabaseSaving}}"/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Right">

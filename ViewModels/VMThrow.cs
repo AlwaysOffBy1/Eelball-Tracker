@@ -73,7 +73,6 @@ namespace EELBALL_TRACKER
         public RelayCommand CmdAddContestant { get; set; }
         public DatabaseModel DatabaseModel { get; set; }
 
-        private bool isUsingIO;
         public bool IsUsingIO { get { return isUsingIO; }
             set
             {
@@ -81,40 +80,46 @@ namespace EELBALL_TRACKER
                 OnPropertyRaised("IsUsingIO");
             } 
         }
-
+        private bool isUsingIO;
         public VMThrow()
         {
             //TODO replace event listeners with actions?
             //Pull in data from XML file and add action listeners to the .add method.
+
             DatabaseModel = new DatabaseModel();
-                Contestants = new ObservableCollection<string>(DatabaseModel.PlayerList);
+            
+            Contestants = new ObservableCollection<string>(DatabaseModel.PlayerList);
                 Contestants.CollectionChanged += delegate(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
-                    AddToObservableCollectionAsync(sender, args, "Contestants");
+                    AddToObservableCollectionAsync(sender, args, "Contestants"); 
                 };
-                TypesOfBalls = new ObservableCollection<string>(DatabaseModel.TypeList);
+                
+            TypesOfBalls = new ObservableCollection<string>(DatabaseModel.TypeList);
                 TypesOfBalls.CollectionChanged += delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
                     AddToObservableCollectionAsync(sender, args, "Types");
                 };
-                Throwers = new ObservableCollection<string>(DatabaseModel.ThrowerList);
+                
+            Throwers = new ObservableCollection<string>(DatabaseModel.ThrowerList);
                 Throwers.CollectionChanged += delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
                     AddToObservableCollectionAsync(sender, args, "Throwers");
                 };
                 
-                ThrowCount = DatabaseModel.ThrowCount;
+            ThrowCount = DatabaseModel.ThrowCount;
                 
             RecentThrows = new ObservableCollection<Throw>();
             CurrentThrow = new Throw(ThrowCount+1);
             CmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
             CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
             CmdAddContestant = new RelayCommand(o => { Contestants.Add(o.ToString()); });
+            
 
         }
         public void SelectPaidBy(object stringSource){ CurrentThrow.PaidBy = (string)stringSource;}
         private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
-        private async void RecordResult(object stringSource) //TODO saw online NOT to do async voids, and instead use async Tasks. 
+        private async void RecordResult(object stringSource)
+        //TODO saw online NOT to do async voids, and instead use async Tasks. 
         {
             IsUsingIO = true;
             Throw t = new Throw
@@ -131,18 +136,19 @@ namespace EELBALL_TRACKER
             await Task.Run(() => DatabaseModel.AppendDatabase(t));
             IsUsingIO =false;
         }
-        private async void AddToObservableCollectionAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args, string category)//TODO saw online NOT to do async voids, and instead use async Tasks. 
+        
+        private async void AddToObservableCollectionAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args, string category)
+        //"Void-returning async methods have a specific purpose: to make async event handlers" so this one is okay
         {
             IsUsingIO = true;
             
             foreach(string s in args.NewItems)
             {
-                DatabaseModel.AppendUIList(category, s);
+                DatabaseModel.AppendCategoryList(category, s);
             }
-            
+            //I like await task.delay so the UI has a chance to flicker, giving an indication that something has changed behind the scenes
             await Task.Delay(20);
             IsUsingIO = false;
-            //i still dont understand asyncs. 
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -83,8 +83,8 @@ namespace EELBALL_TRACKER
             Thrower = "EelGuyLIVE";
             Type = "EELBALL";
             Result = "Miss";
-            For = "Dr_Squekers";
-            PaidBy = "republicofcongo";
+            For = "EelGuyLIVE";
+            PaidBy = "EelGuyLIVE";
             ThrowTime = DateTime.Now;
             ID = id;
         }

@@ -23,6 +23,31 @@ namespace EELBALL_TRACKER
             throw new NotImplementedException();
         }
     }
+    //IsDatabaseSavingColor converts the bool of "isUsingIO" to a color
+    internal class IsDatabaseSavingColor : IValueConverter
+    {
+        private Color Hex2BColor(string hex)
+        {
+            return Color.FromRgb
+                (
+                    System.Convert.ToByte(hex.Substring(0, 2), 16),
+                    System.Convert.ToByte(hex.Substring(2, 2), 16),
+                    System.Convert.ToByte(hex.Substring(4, 2), 16)
+                );
+        }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Color color = (bool)value ? Hex2BColor("FF725F") : Hex2BColor("8CFF5F");
+            return color;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    //IsDatabaseSavingBrush converts the bool of "isUsingIO" to a brush
     internal class IsDatabaseSavingBrush : IValueConverter
     {
         private Brush Hex2Brush(string hex)
