@@ -58,13 +58,13 @@ namespace EELBALL_TRACKER.Models
                     .Select(a => a.Value)
                     .ToList();
 
-                PlayerList = Doc.Descendants("Players")
+                PlayerList = Doc.Descendants("Contestants")
                     .Where(i =>
                     {
                         string c = (string)i.Value;
                         return c != null;
                     })
-                    .Descendants("Player")
+                    .Descendants("Contestant")
                     .Select(a => a.Value)
                     .ToList();
 
@@ -78,6 +78,7 @@ namespace EELBALL_TRACKER.Models
                 (
                     new XElement(subCategory, value)
                 );
+            Doc.Save(FullPath);
         }
 
         private void CheckForExistingDB()

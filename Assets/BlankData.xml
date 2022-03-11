@@ -10,12 +10,12 @@
 		<Type>EELBALL</Type>
 		<Type>SUBBALL</Type>
 	</Types>
-	<Players>
-		<Player>EelGuyLIVE</Player>
-		<Player>republicofcongo</Player>
-		<Player>SchwamGames</Player>
-		<Player>ElementalityNJ</Player>
-	</Players>
+	<Contestants>
+		<Contestant>EelGuyLIVE</Contestant>
+		<Contestant>republicofcongo</Contestant>
+		<Contestant>SchwamGames</Contestant>
+		<Contestant>ElementalityNJ</Contestant>
+	</Contestants>
 	<Throws>
 		<Throw ID="0">
 			<Date>
@@ -31,4 +31,5 @@
 			<Result>Miss</Result>
 		</Throw>
 	</Throws>
+
 </EelBall>

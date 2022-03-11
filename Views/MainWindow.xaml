@@ -106,8 +106,8 @@ MinWidth="530" MinHeight="255"
                         <DockPanel>
                             <Label DockPanel.Dock="Top" Content="FOR" Style="{StaticResource Header}"/>
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBox DockPanel.Dock="Left" Width="120px"/>
-                                <Button DockPanel.Dock="Right" Content="Add" HorizontalAlignment="Stretch"/>
+                                <TextBox x:Name="tb_NewConetstant" DockPanel.Dock="Left" Width="120px"/>
+                                <Button DockPanel.Dock="Right" Content="Add" HorizontalAlignment="Stretch" Command="{Binding CmdAddContestant}" CommandParameter="{Binding ElementName=tb_NewConetstant, Path=Text}"/>
                             </DockPanel>
                             <ListBox Name="lb_For" ItemContainerStyle="{StaticResource lb_design}" DockPanel.Dock="Top" ItemsSource="{Binding Contestants}" SelectedValue="{Binding CurrentThrow.For}">
                                 <Behaviors:Interaction.Triggers>
