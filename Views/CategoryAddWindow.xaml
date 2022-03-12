@@ -1,0 +1,30 @@
+﻿<Window x:Class="EELBALL_TRACKER.Views.CategoryAddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EELBALL_TRACKER.Views"
+        mc:Ignorable="d"
+        Title="CategoryAddWindow" Height="105" Width="200">
+    <Grid Margin="5" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.ColumnSpan="2" FontWeight="Bold">ADD SOMETHINGGG</Label>
+        <Label Grid.Row="1">Category</Label>
+        <Label Grid.Column="1" Grid.Row="1">Value</Label>
+        <ComboBox Grid.Row="1" Margin="0,30,0,0" Grid.RowSpan="2">
+            <ComboBoxItem Content="Throwers"/>
+            <ComboBoxItem Content="Balls ;)"/>
+            <ComboBoxItem Content="Contestants"/>
+            <ComboBoxItem Content="Result"/>
+        </ComboBox>
+        <TextBox Grid.Column="1" Grid.Row="1" Margin="0,30,0,0" Grid.RowSpan="2"/>
+    </Grid>
+</Window>

@@ -71,8 +71,11 @@ namespace EELBALL_TRACKER
         public RelayCommand CmdRecordResult { get; set; }
         public RelayCommand CmdSelectPaidBy { get; set; }
         public RelayCommand CmdAddContestant { get; set; }
+        public RelayCommand CmdAddCategory { get; set; }
         public DatabaseModel DatabaseModel { get; set; }
-
+        
+        public string CategoryAddValue { get; set; }
+        
         public bool IsUsingIO { get { return isUsingIO; }
             set
             {
@@ -113,11 +116,26 @@ namespace EELBALL_TRACKER
             CmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
             CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
             CmdAddContestant = new RelayCommand(o => { Contestants.Add(o.ToString()); });
-            
+            CmdAddCategory = new RelayCommand((o,o2) => { AddCategory(o, o2); });
 
         }
         public void SelectPaidBy(object stringSource){ CurrentThrow.PaidBy = (string)stringSource;}
         private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
+        private async void AddCategory(string category, string value)
+        {
+            switch (category)
+            {
+                case "Contestants":
+                    Contestants.Add(value);
+                    break;
+                case "Types":
+                    TypesOfBalls.Add(value);
+                    break;
+                case "Throwers":
+                    Throwers.Add(value);
+                    break;
+            }
+        }
         private async void RecordResult(object stringSource)
         //TODO saw online NOT to do async voids, and instead use async Tasks. 
         {
@@ -136,7 +154,6 @@ namespace EELBALL_TRACKER
             await Task.Run(() => DatabaseModel.AppendDatabase(t));
             IsUsingIO =false;
         }
-        
         private async void AddToObservableCollectionAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args, string category)
         //"Void-returning async methods have a specific purpose: to make async event handlers" so this one is okay
         {
@@ -151,7 +168,7 @@ namespace EELBALL_TRACKER
             IsUsingIO = false;
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyRaised(string propertyname = null)
         {

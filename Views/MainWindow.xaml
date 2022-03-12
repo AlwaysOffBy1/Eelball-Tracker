@@ -45,13 +45,8 @@ MinWidth="530" MinHeight="255"
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="20px">
-            <MenuItem Header="File">
-                <MenuItem Header="Add">
-                    <MenuItem Header="Thrower"/>
-                    <MenuItem Header="Contestant"/>
-                    <MenuItem Header="Ball"/>
-                    <MenuItem Header="Result" IsEnabled="False"/>
-                </MenuItem>
+            <MenuItem Header="File" IsSubmenuOpen="True">
+                <MenuItem Header="Add"/>
                 <MenuItem Header="Save"/>
                 <Separator/>
                 <MenuItem Header="Quit"/>
@@ -110,28 +105,25 @@ MinWidth="530" MinHeight="255"
                     </Grid.RowDefinitions>
                     <!--#region THROWER BLOCK-->
                     <Border Grid.Column="0" Grid.Row="0" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
-                        <StackPanel>
-                            <Label Content="Thrower" Style="{StaticResource Header}"/>
-                            <ComboBox IsEditable="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding CurrentThrow.Thrower}" ItemsSource="{Binding Throwers}"/>
-                        </StackPanel>
+                        <DockPanel>
+                            <Label DockPanel.Dock="Top" Content="Thrower" Style="{StaticResource Header}"/>
+                            <ComboBox Margin="2" Text="{Binding CurrentThrow.Thrower}" ItemsSource="{Binding Throwers}"/>
+                        </DockPanel>
                     </Border>
                     <!--#endregion-->
                     <!--#region BALL BLOCK -->
                     <Border Grid.Column="1" Grid.Row="0" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
-                        <StackPanel>
-                            <Label Content="BALL" Grid.Column="1" Style="{StaticResource Header}" />
-                            <ComboBox Grid.Row="1" Grid.Column="1" Padding="2" IsEditable="True" Text="{Binding CurrentThrow.Type, Mode=TwoWay}" ItemsSource="{Binding TypesOfBalls}"/>
-                        </StackPanel>
+                        <DockPanel>
+                            <Label DockPanel.Dock="Top" Content="BALL" Grid.Column="1" Style="{StaticResource Header}" />
+                            <ComboBox Margin="2" Text="{Binding CurrentThrow.Type, Mode=TwoWay}" ItemsSource="{Binding TypesOfBalls}"/>
+                        </DockPanel>
                     </Border>
                     <!--#endregion-->
                     <!--#region FOR BLOCK-->
                     <Border Grid.Column="0" Grid.Row="2" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
                         <DockPanel>
                             <Label DockPanel.Dock="Top" Content="FOR" Style="{StaticResource Header}"/>
-                            <DockPanel DockPanel.Dock="Top">
-                                <TextBox x:Name="tb_NewConetstant" DockPanel.Dock="Left" Width="120px"/>
-                                <Button DockPanel.Dock="Right" Content="Add" HorizontalAlignment="Stretch" Command="{Binding CmdAddContestant}" CommandParameter="{Binding ElementName=tb_NewConetstant, Path=Text}"/>
-                            </DockPanel>
+                            
                             <ListBox Name="lb_For" ItemContainerStyle="{StaticResource lb_design}" DockPanel.Dock="Top" ItemsSource="{Binding Contestants}" SelectedValue="{Binding CurrentThrow.For}">
                                 <Behaviors:Interaction.Triggers>
                                     <Behaviors:EventTrigger EventName="SelectionChanged">
