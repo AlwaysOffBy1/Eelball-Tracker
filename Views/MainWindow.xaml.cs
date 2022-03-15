@@ -23,8 +23,6 @@ namespace EELBALL_TRACKER
     {
         public MainWindow()
         {
-            MessageBox.Show("DEBUG OPTION, remove in mainwindow.xaml.cs");
-            VMAddCategory x = new VMAddCategory();
             InitializeComponent();
         }
     }

@@ -15,28 +15,30 @@ namespace EELBALL_TRACKER.ViewModels
     {
         public string Category;
         public string Value;
+        public CategoryAddWindow AddWindow;
+        public RelayCommand CmdButtonClick { get; set; }
         public VMAddCategory() 
         {
-            CategoryAddWindow x = new CategoryAddWindow();
-            x.Closing += PushDataAndClose;
-            x.btn_Cancel.Click +=PushDataAndClose; //need to add event to btn_Cancel and btn_Confirm. winforms loooks really easy right now
-            x.ShowDialog();
+            CmdButtonClick = new RelayCommand(o => { PushDataAndClose(o); });
+            AddWindow = new CategoryAddWindow();
+            AddWindow.Owner = this;
+            AddWindow.ShowDialog();            
+            
+        }
+        public void Show()
+        {
 
         }
-        private void PushDataAndClose(object sender, CancelEventArgs e)
+        private void PushDataAndClose(object source)
         {
-            string source = sender.ToString();
-            switch (source)
+            
+
+            if (source.ToString().Equals("OK"))
             {
-                case "Thrower":
-                    break;
-                case "Ball":
-                    break;
-                case "Contestant":
-                    break;
-                case "Result":
-                    break;
+                Value = AddWindow.tb_Value.Text;
+                Category = AddWindow.cb_Category.Text;
             }
+            AddWindow.Close();
             Task.Delay(1000);
         }
     }
