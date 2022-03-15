@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using EELBALL_TRACKER.ViewModels;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -22,6 +23,8 @@ namespace EELBALL_TRACKER
     {
         public MainWindow()
         {
+            MessageBox.Show("DEBUG OPTION, remove in mainwindow.xaml.cs");
+            VMAddCategory x = new VMAddCategory();
             InitializeComponent();
         }
     }

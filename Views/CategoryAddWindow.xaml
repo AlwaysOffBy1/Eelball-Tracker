@@ -3,28 +3,38 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EELBALL_TRACKER.Views"
+        xmlns:local="clr-namespace:EELBALL_TRACKER" 
+        xmlns:local1="clr-namespace:EELBALL_TRACKER.ViewModels"
         mc:Ignorable="d"
-        Title="CategoryAddWindow" Height="105" Width="200">
+        MinHeight="125"
+        MinWidth="200"
+        Title="CategoryAddWindow" Height="65" Width="110"
+        >
+    <Window.Resources>
+        <local1:VMAddCategory x:Key="VMAddCategory"/>
+    </Window.Resources>
     <Grid Margin="5" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="20*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Label Grid.ColumnSpan="2" FontWeight="Bold">ADD SOMETHINGGG</Label>
+        <Label Grid.ColumnSpan="2" FontWeight="Bold">Add someone or something</Label>
         <Label Grid.Row="1">Category</Label>
         <Label Grid.Column="1" Grid.Row="1">Value</Label>
-        <ComboBox Grid.Row="1" Margin="0,30,0,0" Grid.RowSpan="2">
+        <ComboBox Grid.Row="2" Margin="4">
             <ComboBoxItem Content="Throwers"/>
             <ComboBoxItem Content="Balls ;)"/>
             <ComboBoxItem Content="Contestants"/>
             <ComboBoxItem Content="Result"/>
         </ComboBox>
-        <TextBox Grid.Column="1" Grid.Row="1" Margin="0,30,0,0" Grid.RowSpan="2"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Margin="4"/>
+        <Button Name="btn_Cancel" Grid.Column="0" Grid.Row="3" Content="Cancel" Click="PushDataAndClose"/>
+        <Button Name="btn_Confirm" Grid.Column="1" Grid.Row="3" Content="Confirm"/>
     </Grid>
 </Window>
