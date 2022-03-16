@@ -69,15 +69,15 @@ namespace EELBALL_TRACKER
             }
         }
         private ObservableCollection<string> contestants;
+
         public RelayCommand CmdRecordResult { get; set; }
         public RelayCommand CmdSelectPaidBy { get; set; }
         public RelayCommand CmdAddContestant { get; set; }
         public RelayCommand CmdAddCategory { get; set; }
-        public RelayCommand CmdShowAddCategoryWindow { get; set; }
-        
+        public RelayCommand CmdAddCategoryParam { get; set; }
+
         public DatabaseModel DatabaseModel { get; set; }  
-        public VMAddCategory AddCategortyVM { get; set; }
-        public string CategoryAddValue { get; set; }
+        public VMAddCategoryParam CategoryParam { get; set; }
         
         public bool IsUsingIO { get { return isUsingIO; }
             set
@@ -113,24 +113,21 @@ namespace EELBALL_TRACKER
                 };
                 
             ThrowCount = DatabaseModel.ThrowCount;
-            AddCategortyVM = new VMAddCategory();
-                
+            CategoryParam = new VMAddCategoryParam();
+
             RecentThrows = new ObservableCollection<Throw>();
-            CurrentThrow = new Throw(ThrowCount+1);
+            CurrentThrow = new Throw(ThrowCount + 1);
             CmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
             CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
             CmdAddContestant = new RelayCommand(o => { Contestants.Add(o.ToString()); });
             CmdAddCategory = new RelayCommand((o,o2) => { AddCategoryValue(o, o2); });
-            CmdShowAddCategoryWindow = new RelayCommand(o=>AddCategoryParameter());
+            CmdAddCategoryParam = new RelayCommand(CategoryParam.CmdOpenForm.Execute);
 
         }
-        public void AddCategoryParameter()
-        {
-            AddCategortyVM.Show();
-        }
+
         public void SelectPaidBy(object stringSource){ CurrentThrow.PaidBy = (string)stringSource;}
         private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
-        private async void AddCategoryValue(string category, string value)
+        private void AddCategoryValue(string category, string value)
         {
             switch (category)
             {

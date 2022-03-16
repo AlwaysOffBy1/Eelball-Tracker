@@ -46,7 +46,7 @@ MinWidth="530" MinHeight="255"
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="20px">
             <MenuItem Header="File">
-                <MenuItem Header="Add" Command="{Binding CmdShowAddCategoryWindow}"/>
+                <MenuItem Header="Add" Command="{Binding CmdAddCategoryParam}"/>
                 <MenuItem Header="Save"/>
                 <Separator/>
                 <MenuItem Header="Quit"/>
