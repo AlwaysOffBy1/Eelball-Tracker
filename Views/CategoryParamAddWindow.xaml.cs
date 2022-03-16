@@ -23,15 +23,8 @@ namespace EELBALL_TRACKER.Views
         public CategoryParamAddWindow()
         {
             InitializeComponent();
+            
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        //Still wrapping my head around this. Not ok to reference View in VM, but this is somehow better?
-        {
-            if(DataContext is IDialogService vm)
-            {
-                vm.Close += () => { vm.Close(); };
-            }
-        }
     }
 }
