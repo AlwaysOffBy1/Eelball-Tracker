@@ -108,6 +108,7 @@ namespace EELBALL_TRACKER.Models
         {
             CacheList.AddRange(throws);
             AppendDatabase();
+            ThrowCount += CacheSize;
         }
         private void AppendDatabase()
         {
@@ -129,6 +130,7 @@ namespace EELBALL_TRACKER.Models
                             new XElement("Result", t.Result)
                             , new XAttribute("ID", t.ID))
                         );
+                    CacheList = new List<Throw>();
                 }
                 //XDocument does NOT implement IDisposable and uses xmlreader so simply saving without disposal is ok
                 Doc.Save(FullPath);

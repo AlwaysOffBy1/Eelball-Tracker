@@ -146,10 +146,7 @@ namespace EELBALL_TRACKER
                     }
                 }
             });
-            CmdForceSave = new RelayCommand(o => 
-            {
-                _ = ForceSaveAsync(); //is this a good idea instead of just not assigning the discard?
-            }, new Func<bool>(() => ShouldCommandsBeActive()));
+            CmdForceSave = new RelayCommand(o => { _ = ForceSaveAsync(); }, new Func<bool>(() => ShouldCommandsBeActive()));
 
         }
         public async Task ForceSaveAsync()//TODO ok "returning Task" doesn't nessesarily mean you need to do "return new Task()..." this makes much more sense. Change async voids to async Tasks
@@ -208,7 +205,6 @@ namespace EELBALL_TRACKER
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         private void OnPropertyRaised(string propertyname = null)
         {
             if (PropertyChanged != null)

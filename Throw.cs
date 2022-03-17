@@ -77,7 +77,16 @@ namespace EELBALL_TRACKER
             }
         }
         private int _id;
-
+        public bool IsHasBeenRecorded //Like to use "is" as the first word for all bools. kinda funny here
+        {
+            get => _isHasBeenRecorded;
+            set
+            {
+                _isHasBeenRecorded = value;
+                OnPropertyRaised("IsHasBeenRecorded");
+            }
+        }
+        private bool _isHasBeenRecorded;
         public Throw(int id)
         {
             Thrower = "EelGuyLIVE";
@@ -87,6 +96,7 @@ namespace EELBALL_TRACKER
             PaidBy = "EelGuyLIVE";
             ThrowTime = DateTime.Now;
             ID = id;
+            IsHasBeenRecorded = false;
         }
         public Throw(string thrower, string type, string fr, string paidBy, string result, int id)
         {
