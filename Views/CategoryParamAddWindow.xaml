@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EELBALL_TRACKER" 
+        xmlns:local2="clr-namespace:EELBALL_TRACKER" 
         xmlns:local1="clr-namespace:EELBALL_TRACKER.ViewModels"
         mc:Ignorable="d"
         MinHeight="125"
@@ -11,6 +11,7 @@
         Title="CategoryParamAddWindow" Height="130" Width="110"
         >
     <Window.Resources>
+        
         <local1:VMAddCategoryParam x:Key="VMAddCategoryParam"/>
     </Window.Resources>
     <Window.DataContext>
@@ -37,7 +38,7 @@
             <ComboBoxItem Content="Result"/>
         </ComboBox>
         <TextBox Name="tb_Value" Grid.Column="1" Grid.Row="2" Margin="4" Text="{Binding Value}"/>
-        <Button Name="btn_Cancel" Grid.Column="0" Grid.Row="3" Content="Cancel" Command="{Binding CmdCloseForm}" CommandParameter="Cancel"/>
+        <Button Name="btn_Cancel" Grid.Column="0" Grid.Row="3" Content="Cancel" Command="{Binding CmdCloseForm}" CommandParameter="CANCEL"/>
         <Button Name="btn_Confirm" Grid.Column="1" Grid.Row="3" Content="Confirm" Command="{Binding CmdCloseForm}" CommandParameter="OK"/>
     </Grid>
 </Window>

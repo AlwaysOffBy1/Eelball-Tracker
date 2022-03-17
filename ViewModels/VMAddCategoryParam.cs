@@ -18,26 +18,21 @@ namespace EELBALL_TRACKER.ViewModels
     {
         public string Category { get; set; }
         public string Value { get; set; }
-
-        CategoryParamAddWindow view;//Yes this breaks the rules of MVVM. DialogService.cs has more info
+        public bool CommitData;
         public RelayCommand CmdButtonClick { get; set; }
         public RelayCommand CmdOpenForm { get; set; }
         public RelayCommand CmdCloseForm { get; set; }
         public Action Close { get; set; }
-
+        public Action PassData { get; set; }
         public VMAddCategoryParam() 
         {
-            view = new CategoryParamAddWindow();
-            CmdOpenForm = new RelayCommand(o => view.ShowDialog());
             CmdCloseForm = new RelayCommand(o => PushDataAndClose(o));
         }
-        private void PushDataAndClose(object source)
+        private void PushDataAndClose(object stringSource)
         {
-            
-            Task.Delay(1000);
-            view.Close();
-            
-            
+            CommitData = stringSource.ToString().Equals("OK");
+            PassData?.Invoke();
+            Close?.Invoke();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -20,11 +20,29 @@ namespace EELBALL_TRACKER.Views
     /// </summary>
     public partial class CategoryParamAddWindow : Window
     {
+        public string CB_Category;
+        public string TB_Value;
         public CategoryParamAddWindow()
         {
             InitializeComponent();
-            
+            Loaded += InvokeList;
         }
 
+        private void InvokeList(object sender, RoutedEventArgs e)
+        {
+            if(DataContext is VMAddCategoryParam vm)
+            {
+                vm.Close += () =>
+                {
+                    this.Close();
+                };
+                vm.PassData += () =>
+                {
+                    CB_Category = vm.Category;
+                    TB_Value = vm.Value;
+                };
+            }
+            
+        }
     }
 }

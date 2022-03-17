@@ -78,7 +78,8 @@ namespace EELBALL_TRACKER
 
         public DatabaseModel DatabaseModel { get; set; }
 
-        ViewFactory VFDialog = new ViewFactory(Category); //need to use Views to access, but MVVM says i shouldnt use Views in VMs. UGH
+        ViewFactory VFDialog = new ViewFactory("CategoryParamAddWindow"); //need to use Views to access, but MVVM says i shouldnt use Views in VMs. UGH
+        public Action<VMAddCategoryParam> GetNewCategoryData { get; set; }
         
         public bool IsUsingIO { get { return isUsingIO; }
             set
@@ -122,7 +123,12 @@ namespace EELBALL_TRACKER
             CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
             CmdAddContestant = new RelayCommand(o => { Contestants.Add(o.ToString()); });
             CmdAddCategory = new RelayCommand((o,o2) => { AddCategoryValue(o, o2); });
-            CmdAddCategoryParam = new RelayCommand(VF.CmdOpenForm.Execute);
+            CmdAddCategoryParam = new RelayCommand(o => 
+            { 
+                VFDialog = new ViewFactory("CategoryParamAddWindow"); 
+                VFDialog.ShowDialog();
+                Console.Write(VFDialog.Value);
+            });
 
         }
 
