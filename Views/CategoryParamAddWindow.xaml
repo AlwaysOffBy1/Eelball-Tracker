@@ -11,8 +11,8 @@
         Title="CategoryParamAddWindow" Height="130" Width="110"
         >
     <Window.Resources>
-        
         <local1:VMAddCategoryParam x:Key="VMAddCategoryParam"/>
+        <local2:ComboBoxItemToString x:Key="ComboBoxItemToString"/>
     </Window.Resources>
     <Window.DataContext>
         <local1:VMAddCategoryParam/>
@@ -33,9 +33,9 @@
         <Label Grid.Column="1" Grid.Row="1">Value</Label>
         <ComboBox Name="cb_Category" Grid.Row="2" Margin="4" SelectedIndex="0" SelectedItem="{Binding Category}">
             <ComboBoxItem Content="Throwers"/>
-            <ComboBoxItem Content="Balls ;)"/>
+            <ComboBoxItem Content="Balls"/>
             <ComboBoxItem Content="Contestants"/>
-            <ComboBoxItem Content="Result"/>
+            <ComboBoxItem Content="Results" IsEnabled="False"/>
         </ComboBox>
         <TextBox Name="tb_Value" Grid.Column="1" Grid.Row="2" Margin="4" Text="{Binding Value}"/>
         <Button Name="btn_Cancel" Grid.Column="0" Grid.Row="3" Content="Cancel" Command="{Binding CmdCloseForm}" CommandParameter="CANCEL"/>

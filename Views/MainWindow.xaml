@@ -47,7 +47,8 @@ MinWidth="530" MinHeight="255"
         <Menu DockPanel.Dock="Top" Height="20px">
             <MenuItem Header="File">
                 <MenuItem Header="Add" Command="{Binding CmdAddCategoryParam}"/>
-                <MenuItem Header="Save"/>
+                <MenuItem Header="Delete" IsEnabled="False"/>
+                <MenuItem Header="Save" Command="{Binding CmdForceSave}"/>
                 <Separator/>
                 <MenuItem Header="Quit"/>
             </MenuItem>

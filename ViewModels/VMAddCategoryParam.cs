@@ -18,12 +18,12 @@ namespace EELBALL_TRACKER.ViewModels
     {
         public string Category { get; set; }
         public string Value { get; set; }
-        public bool CommitData;
+        public bool CommitData = false;
         public RelayCommand CmdButtonClick { get; set; }
         public RelayCommand CmdOpenForm { get; set; }
         public RelayCommand CmdCloseForm { get; set; }
         public Action Close { get; set; }
-        public Action PassData { get; set; }
+        public Action<bool> PassData { get; set; }
         public VMAddCategoryParam() 
         {
             CmdCloseForm = new RelayCommand(o => PushDataAndClose(o));
@@ -31,7 +31,7 @@ namespace EELBALL_TRACKER.ViewModels
         private void PushDataAndClose(object stringSource)
         {
             CommitData = stringSource.ToString().Equals("OK");
-            PassData?.Invoke();
+            PassData.Invoke(false);
             Close?.Invoke();
         }
 

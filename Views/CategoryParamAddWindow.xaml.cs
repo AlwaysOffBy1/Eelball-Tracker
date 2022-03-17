@@ -36,10 +36,13 @@ namespace EELBALL_TRACKER.Views
                 {
                     this.Close();
                 };
-                vm.PassData += () =>
+                vm.PassData += shouldAddData =>
                 {
-                    CB_Category = vm.Category;
-                    TB_Value = vm.Value;
+                    if (shouldAddData)
+                    {
+                        CB_Category = vm.Category;
+                        TB_Value = vm.Value;
+                    }
                 };
             }
             

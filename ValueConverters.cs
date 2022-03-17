@@ -120,18 +120,19 @@ namespace EELBALL_TRACKER
             return !(bool)value;
         }
     }
-}
-//Converts "System.Window.Control.Textbox TextExample" to "TextExample"
-internal class ComboBoxItemToString : IValueConverter
-{
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    //Converts "System.Window.Control.Textbox TextExample" to "TextExample"
+    internal class ComboBoxItemToString : IValueConverter
     {
-        ComboBoxItem x = (ComboBoxItem)value;
-        return x.Content;
-    }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            ComboBoxItem x = (ComboBoxItem)value;
+            return x.Content;
+        }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return null;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
     }
 }
+

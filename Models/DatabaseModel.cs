@@ -18,6 +18,7 @@ namespace EELBALL_TRACKER.Models
         public List<string> PlayerList;
         public int ThrowCount;
         private List<Throw> CacheList;
+        private bool isForceSave;
 
         private readonly int CacheSize = 5;
         private XDocument Doc;
@@ -103,10 +104,14 @@ namespace EELBALL_TRACKER.Models
         {
             AppendDatabase(new List<Throw> { t });
         }
-        public void AppendDatabase(List<Throw> throws) //If theres enough data, add it to the XML database. Otherwise add it to the cache array. 
+        public void AppendDatabase(List<Throw> throws) //If theres enough data, add it to the XML database. Otherwise add it to the cache list. 
         {
             CacheList.AddRange(throws);
-            if (CacheList.Count > CacheSize)
+            AppendDatabase();
+        }
+        private void AppendDatabase()
+        {
+            if (CacheList.Count > CacheSize || isForceSave)
             {
                 foreach (Throw t in CacheList)
                 {
@@ -127,9 +132,16 @@ namespace EELBALL_TRACKER.Models
                 }
                 //XDocument does NOT implement IDisposable and uses xmlreader so simply saving without disposal is ok
                 Doc.Save(FullPath);
-                Thread.Sleep(100);
+                Thread.Sleep(1000); //yea you thought it took that long to add to an XML 
             }
             Thread.Sleep(20);
+        }
+        public void ForceDatabaseSave()
+        {
+            //TODO Is there a more elegant way to do this? Perhaps edit the "set" of the bool to auto append data? Is that good practice for a set to run a function?
+            isForceSave = true;
+            AppendDatabase();
+            isForceSave = false;
         }
     }
 }

@@ -75,6 +75,8 @@ namespace EELBALL_TRACKER
         public RelayCommand CmdAddContestant { get; set; }
         public RelayCommand CmdAddCategory { get; set; }
         public RelayCommand CmdAddCategoryParam { get; set; }
+        public RelayCommand CmdForceSave { get; set; }
+        public Action CloseWindow { get; set; }
 
         public DatabaseModel DatabaseModel { get; set; }
 
@@ -119,7 +121,7 @@ namespace EELBALL_TRACKER
 
             RecentThrows = new ObservableCollection<Throw>();
             CurrentThrow = new Throw(ThrowCount + 1);
-            CmdRecordResult = new RelayCommand(o => { RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
+            CmdRecordResult = new RelayCommand(o => { _ = RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
             CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
             CmdAddContestant = new RelayCommand(o => { Contestants.Add(o.ToString()); });
             CmdAddCategory = new RelayCommand((o,o2) => { AddCategoryValue(o, o2); });
@@ -127,11 +129,36 @@ namespace EELBALL_TRACKER
             { 
                 VFDialog = new ViewFactory("CategoryParamAddWindow"); 
                 VFDialog.ShowDialog();
-                Console.Write(VFDialog.Value);
+                if(VFDialog.Value is not null)
+                {
+                    string str = VFDialog.Value.Remove(0, 38); //remove System.Windows.Controls.ComboboxItem: Data
+                    switch (str)
+                    {
+                        case "Throwers":
+                            Throwers.Add(VFDialog.Value2);
+                            break;
+                        case "Balls":
+                            TypesOfBalls.Add(VFDialog.Value2);
+                            break;
+                        case "Contestants":
+                            Contestants.Add(VFDialog.Value2);
+                            break;
+                    }
+                }
             });
+            CmdForceSave = new RelayCommand(o => 
+            {
+                _ = ForceSaveAsync(); //is this a good idea instead of just not assigning the discard?
+            }, new Func<bool>(() => ShouldCommandsBeActive()));
 
         }
-
+        public async Task ForceSaveAsync()//TODO ok "returning Task" doesn't nessesarily mean you need to do "return new Task()..." this makes much more sense. Change async voids to async Tasks
+        {
+            IsUsingIO = true;
+            await Task.Run(() => DatabaseModel.ForceDatabaseSave());
+            MessageBox.Show("Saving Complete","EELBALL TRACKER"); //this makes SO MUCH SENSE NOW
+            IsUsingIO = false;
+        }
         public void SelectPaidBy(object stringSource){ CurrentThrow.PaidBy = (string)stringSource;}
         private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
         private void AddCategoryValue(string category, string value)
@@ -149,8 +176,7 @@ namespace EELBALL_TRACKER
                     break;
             }
         }
-        private async void RecordResult(object stringSource)
-        //TODO saw online NOT to do async voids, and instead use async Tasks. 
+        private async Task RecordResult(object stringSource)
         {
             IsUsingIO = true;
             Throw t = new Throw
