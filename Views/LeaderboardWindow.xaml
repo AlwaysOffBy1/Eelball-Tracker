@@ -3,9 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EELBALL_TRACKER.Views"
+        xmlns:local="clr-namespace:EELBALL_TRACKER.ViewModels"
         mc:Ignorable="d"
-        Title="LeaderboardWindow" Height="255" Width="365">
+        Title="LeaderboardWindow" Height="325" Width="230">
+    <Window.Resources>
+        
+    </Window.Resources>
+    <Window.DataContext>
+        <local:VMLeaderboard/>
+    </Window.DataContext>
     <Grid>
         <Grid.Background>
             <RadialGradientBrush>
@@ -22,6 +28,22 @@
             <TextBlock Text="EEL" Foreground="Red"/>
             <Label Content="DERBOARD" Padding="-1"/>
         </StackPanel>
+        
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            
+            <TextBox Grid.Row="1" Text="SECOND"/>
+            <TextBox Grid.Row="2" Text="THIRD"/>
+            <TextBox Grid.Row="3" Text="FOURTH"/>
+            <TextBox Grid.Row="4" Text="FIFTH"/>
+        </Grid>
         
     </Grid>
 </Window>

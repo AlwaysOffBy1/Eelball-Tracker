@@ -18,7 +18,7 @@ namespace EELBALL_TRACKER
         public RelayCommand CmdCloseDialog;
         public RelayCommand CmdOpen;
         public Window WindowToOpen;
-        public string Value { get; set; }
+        public string Value { get; set; } //made generic so this could be reused anywhere
         public string Value2 { get; set; }
         public Action GetData { get; set; }
         public ViewFactory(string windowToOpen)

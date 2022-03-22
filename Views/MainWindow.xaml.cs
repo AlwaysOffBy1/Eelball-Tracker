@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace EELBALL_TRACKER
 {
@@ -24,7 +25,20 @@ namespace EELBALL_TRACKER
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += GetCommands;
         }
+
+        private void GetCommands(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is VMThrow vm)
+            {
+                vm.CloseWindow += () =>
+                {
+                    this.Close();
+                };
+            }
+        }
+
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);

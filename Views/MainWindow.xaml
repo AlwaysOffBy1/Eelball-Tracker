@@ -10,10 +10,13 @@
         xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
         Title="Eelball Tracker" Height="450" Width="910"
         Icon="/Assets/logo.png"
-        
-MinWidth="530" MinHeight="255"
+        MinWidth="530" MinHeight="255"
         >
-    
+    <Behaviors:Interaction.Triggers>
+        <Behaviors:EventTrigger EventName="MouseLeave">
+            <Behaviors:InvokeCommandAction Command="{Binding CmdForceSave}"/>
+        </Behaviors:EventTrigger>
+    </Behaviors:Interaction.Triggers>
     <Window.DataContext>
         <local:VMThrow/>
     </Window.DataContext>
@@ -24,11 +27,6 @@ MinWidth="530" MinHeight="255"
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
-        <local1:IsDatabaseSaving x:Key="IsDatabaseSaving"/>
-        <local1:IsDatabaseSavingBrush x:Key="IsDatabaseSavingBrush"/>
-        <local1:IsDatabaseSavingColor x:Key="IsDatabaseSavingColor"/>
-        <local1:ThrowToBrush x:Key="ThrowToBrush"/>
-        <local1:InvertBool x:Key="InvertBool"/>
         <Style x:Key="lb_design" TargetType="ListBoxItem">
             <Style.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
@@ -41,6 +39,13 @@ MinWidth="530" MinHeight="255"
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <local1:IsDatabaseSaving x:Key="IsDatabaseSaving"/>
+        <local1:IsDatabaseSavingBrush x:Key="IsDatabaseSavingBrush"/>
+        <local1:IsDatabaseSavingColor x:Key="IsDatabaseSavingColor"/>
+        <local1:ThrowToBrush x:Key="ThrowToBrush"/>
+        <local1:InvertBool x:Key="InvertBool"/>
+        <local1:BoolToBold x:Key="BoolToBold"/>
+        
     </Window.Resources>
 
     <DockPanel>
@@ -170,6 +175,8 @@ MinWidth="530" MinHeight="255"
                                     </DataGrid.Columns>
                                     <DataGrid.RowStyle>
                                         <Style TargetType="DataGridRow">
+                                            <Setter Property="FontWeight" Value="{Binding Converter={StaticResource BoolToBold}, Path=IsHasBeenRecorded}" >
+                                            </Setter>
                                             <Setter Property="Background">
                                                 <Setter.Value>
                                                     <MultiBinding Converter="{StaticResource ThrowToBrush}">
@@ -180,7 +187,7 @@ MinWidth="530" MinHeight="255"
                                             </Setter>
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="Green"/>
+                                                    <Setter Property="Background" Value="Black"/>
                                                     <Setter Property="Foreground" Value="White"/>
                                                 </Trigger>
                                             </Style.Triggers>

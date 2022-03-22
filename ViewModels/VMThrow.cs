@@ -1,5 +1,4 @@
 ﻿using EELBALL_TRACKER.Models;
-using EELBALL_TRACKER.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -76,12 +75,13 @@ namespace EELBALL_TRACKER
         public RelayCommand CmdAddCategory { get; set; }
         public RelayCommand CmdAddCategoryParam { get; set; }
         public RelayCommand CmdForceSave { get; set; }
-        public Action CloseWindow { get; set; }
+
+        public Action CloseWindow;
 
         public DatabaseModel DatabaseModel { get; set; }
 
         ViewFactory VFDialog = new ViewFactory("CategoryParamAddWindow"); //need to use Views to access, but MVVM says i shouldnt use Views in VMs. UGH
-        public Action<VMAddCategoryParam> GetNewCategoryData { get; set; }
+        ViewFactory VFLeaderboard = new ViewFactory("LeaderboardWindow");
         
         public bool IsUsingIO { get { return isUsingIO; }
             set
@@ -97,23 +97,26 @@ namespace EELBALL_TRACKER
             //Pull in data from XML file and add action listeners to the .add method.
 
             DatabaseModel = new DatabaseModel();
+            VFLeaderboard.Show();
             
+            
+            //My understanding of async/await would tell me that async delegates should contain async methods. async really spreads fast
             Contestants = new ObservableCollection<string>(DatabaseModel.PlayerList);
-                Contestants.CollectionChanged += delegate(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+                Contestants.CollectionChanged += async delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
-                    AddToObservableCollectionAsync(sender, args, "Contestants"); 
+                    await Task.Run(() => AddToObservableCollectionAsync(sender, args, "Contestants")); 
                 };
                 
             TypesOfBalls = new ObservableCollection<string>(DatabaseModel.TypeList);
-                TypesOfBalls.CollectionChanged += delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+                TypesOfBalls.CollectionChanged += async delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
-                    AddToObservableCollectionAsync(sender, args, "Types");
+                    await Task.Run(() => AddToObservableCollectionAsync(sender, args, "Types"));
                 };
                 
             Throwers = new ObservableCollection<string>(DatabaseModel.ThrowerList);
-                Throwers.CollectionChanged += delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+                Throwers.CollectionChanged += async delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
-                    AddToObservableCollectionAsync(sender, args, "Throwers");
+                    await Task.Run(() => AddToObservableCollectionAsync(sender, args, "Throwers"));
                 };
                 
             ThrowCount = DatabaseModel.ThrowCount;
@@ -151,10 +154,12 @@ namespace EELBALL_TRACKER
         }
         public async Task ForceSaveAsync()//TODO ok "returning Task" doesn't nessesarily mean you need to do "return new Task()..." this makes much more sense. Change async voids to async Tasks
         {
-            IsUsingIO = true;
-            await Task.Run(() => DatabaseModel.ForceDatabaseSave());
-            MessageBox.Show("Saving Complete","EELBALL TRACKER"); //this makes SO MUCH SENSE NOW
-            IsUsingIO = false;
+            if(DatabaseModel.CacheList.Count > 0)
+            {
+                IsUsingIO = true;
+                await Task.Run(() => DatabaseModel.ForceDatabaseSave());//this makes SO MUCH SENSE NOW
+                IsUsingIO = false;
+            }
         }
         public void SelectPaidBy(object stringSource){ CurrentThrow.PaidBy = (string)stringSource;}
         private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
@@ -190,7 +195,7 @@ namespace EELBALL_TRACKER
             await Task.Run(() => DatabaseModel.AppendDatabase(t));
             IsUsingIO =false;
         }
-        private async void AddToObservableCollectionAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args, string category)
+        private async Task AddToObservableCollectionAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args, string category)
         //"Void-returning async methods have a specific purpose: to make async event handlers" so this one is okay
         {
             IsUsingIO = true;

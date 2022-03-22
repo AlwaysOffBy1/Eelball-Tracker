@@ -10,14 +10,14 @@ using System.Xml.XPath;
 namespace EELBALL_TRACKER.Models
 {
 
-    internal class DatabaseModel //I really didnt want to implement INotifyPropChanged here but couldnt figure a way to report when application is in the middle of saving so here we are.
+    internal class DatabaseModel
     {
-        public string FullPath;
+        private string FullPath;
         public List<string> ThrowerList;
         public List<string> TypeList;
         public List<string> PlayerList;
         public int ThrowCount;
-        private List<Throw> CacheList;
+        public List<Throw> CacheList;
         private bool isForceSave;
 
         private readonly int CacheSize = 5;
@@ -39,6 +39,7 @@ namespace EELBALL_TRACKER.Models
                 //holy dang LINQ is cool/hard
                 //Probably a better way to do this. like make the whole xml file up to throws an ienumerable, then run each querey on that ienumerable instead of the xdocument.
                 //but you know what? this list is never gonna be more than like 50 so i guess its ok to waste some millis. gonna add TODO anyway for the OCD
+
                 ThrowerList = Doc.Descendants("Throwers")
                     .Where(i =>
                     {
@@ -112,7 +113,8 @@ namespace EELBALL_TRACKER.Models
         }
         private void AppendDatabase()
         {
-            if (CacheList.Count > CacheSize || isForceSave)
+            //if the cachelist is long, empty it. if forcing save, dont force if cache is empty
+            if (CacheList.Count > CacheSize || (isForceSave && CacheList.Count > 0))
             {
                 foreach (Throw t in CacheList)
                 {
@@ -131,6 +133,7 @@ namespace EELBALL_TRACKER.Models
                             , new XAttribute("ID", t.ID))
                         );
                     CacheList = new List<Throw>();
+                    t.IsHasBeenRecorded = true;
                 }
                 //XDocument does NOT implement IDisposable and uses xmlreader so simply saving without disposal is ok
                 Doc.Save(FullPath);

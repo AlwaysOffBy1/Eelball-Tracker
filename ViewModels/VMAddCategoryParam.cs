@@ -11,9 +11,6 @@ using System.Windows.Input;
 
 namespace EELBALL_TRACKER.ViewModels
 {
-    //This VM breaks the rules of MVVM. I instantiate the view since using a DialogService wasn't working.
-    //Instead of rewriting everything from scratch, I'll let a VM talk to a simple Dialog. Sorry MVVM. 
-    //For some mroe details go to DialogService.cs
     internal class VMAddCategoryParam: INotifyPropertyChanged
     {
         public string Category { get; set; }

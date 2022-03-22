@@ -134,5 +134,17 @@ namespace EELBALL_TRACKER
             return null;
         }
     }
+    internal class BoolToBold : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (bool)value ? System.Windows.FontWeights.Normal : System.Windows.FontWeights.Bold;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 

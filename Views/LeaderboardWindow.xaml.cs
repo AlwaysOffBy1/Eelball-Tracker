@@ -22,6 +22,24 @@ namespace EELBALL_TRACKER.Views
         public LeaderboardWindow()
         {
             InitializeComponent();
+            Loaded += GetCommands;
+
+        }
+        private void GetCommands(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is VMThrow vm)
+            {
+                vm.CloseWindow += () =>
+                {
+                    this.Close();
+                };
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            Application.Current.Shutdown();
         }
     }
 }
