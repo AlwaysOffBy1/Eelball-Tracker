@@ -12,7 +12,8 @@ namespace EELBALL_TRACKER.Models
     public class RelayCommand :ICommand
     {
         private Action<object> methodToExecute;
-        private Action<string, string> methodToExecuteTwoParam;
+        private Action<string, string> methodToExecuteTwoParamString;
+        private Action<string, int> methodToExecuteTwoParam;
         private Func<bool> canExecuteEvaluator;
         
 
@@ -22,6 +23,11 @@ namespace EELBALL_TRACKER.Models
             this.canExecuteEvaluator = canExecuteEvaluator;
         }
         public RelayCommand(Action<string, string> methodToExecute)
+        {
+            this.methodToExecuteTwoParamString = methodToExecute;
+            this.canExecuteEvaluator = null;
+        }
+        public RelayCommand(Action<string, int> methodToExecute)
         {
             this.methodToExecuteTwoParam = methodToExecute;
             this.canExecuteEvaluator = null;

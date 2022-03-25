@@ -11,6 +11,7 @@
         Title="Eelball Tracker" Height="450" Width="910"
         Icon="/Assets/logo.png"
         MinWidth="530" MinHeight="255"
+        
         >
     <Behaviors:Interaction.Triggers>
         <Behaviors:EventTrigger EventName="MouseLeave">
@@ -54,6 +55,8 @@
                 <MenuItem Header="Add" Command="{Binding CmdAddCategoryParam}"/>
                 <MenuItem Header="Delete" IsEnabled="False"/>
                 <MenuItem Header="Save" Command="{Binding CmdForceSave}"/>
+                <Separator/>
+                <MenuItem Header="Re-open Leaderboard" Command="{Binding CmdLeaderboardShow}"/>
                 <Separator/>
                 <MenuItem Header="Quit"/>
             </MenuItem>

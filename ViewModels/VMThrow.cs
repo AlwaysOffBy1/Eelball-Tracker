@@ -1,4 +1,5 @@
 ﻿using EELBALL_TRACKER.Models;
+using EELBALL_TRACKER;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -75,10 +76,9 @@ namespace EELBALL_TRACKER
         public RelayCommand CmdAddCategory { get; set; }
         public RelayCommand CmdAddCategoryParam { get; set; }
         public RelayCommand CmdForceSave { get; set; }
+        public RelayCommand CmdLeaderboardShow { get; set; }
 
         public Action CloseWindow;
-
-        public DatabaseModel DatabaseModel { get; set; }
 
         ViewFactory VFDialog = new ViewFactory("CategoryParamAddWindow"); //need to use Views to access, but MVVM says i shouldnt use Views in VMs. UGH
         ViewFactory VFLeaderboard = new ViewFactory("LeaderboardWindow");
@@ -96,30 +96,30 @@ namespace EELBALL_TRACKER
             //TODO replace event listeners with actions?
             //Pull in data from XML file and add action listeners to the .add method.
 
-            DatabaseModel = new DatabaseModel();
-            VFLeaderboard.Show();
+            Statics.DatabaseModel = new DatabaseModel();
+            //VFLeaderboard.Show();
             
             
             //My understanding of async/await would tell me that async delegates should contain async methods. async really spreads fast
-            Contestants = new ObservableCollection<string>(DatabaseModel.PlayerList);
+            Contestants = new ObservableCollection<string>(Statics.DatabaseModel.PlayerList);
                 Contestants.CollectionChanged += async delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
                     await Task.Run(() => AddToObservableCollectionAsync(sender, args, "Contestants")); 
                 };
                 
-            TypesOfBalls = new ObservableCollection<string>(DatabaseModel.TypeList);
+            TypesOfBalls = new ObservableCollection<string>(Statics.DatabaseModel.TypeList);
                 TypesOfBalls.CollectionChanged += async delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
                     await Task.Run(() => AddToObservableCollectionAsync(sender, args, "Types"));
                 };
                 
-            Throwers = new ObservableCollection<string>(DatabaseModel.ThrowerList);
+            Throwers = new ObservableCollection<string>(Statics.DatabaseModel.ThrowerList);
                 Throwers.CollectionChanged += async delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
                 {
                     await Task.Run(() => AddToObservableCollectionAsync(sender, args, "Throwers"));
                 };
                 
-            ThrowCount = DatabaseModel.ThrowCount;
+            ThrowCount = Statics.DatabaseModel.ThrowCount;
             
 
             RecentThrows = new ObservableCollection<Throw>();
@@ -150,14 +150,15 @@ namespace EELBALL_TRACKER
                 }
             });
             CmdForceSave = new RelayCommand(o => { _ = ForceSaveAsync(); }, new Func<bool>(() => ShouldCommandsBeActive()));
+            CmdLeaderboardShow = new RelayCommand(o => VFLeaderboard.Show());
 
         }
         public async Task ForceSaveAsync()//TODO ok "returning Task" doesn't nessesarily mean you need to do "return new Task()..." this makes much more sense. Change async voids to async Tasks
         {
-            if(DatabaseModel.CacheList.Count > 0)
+            if(Statics.DatabaseModel.CacheList.Count > 0)
             {
                 IsUsingIO = true;
-                await Task.Run(() => DatabaseModel.ForceDatabaseSave());//this makes SO MUCH SENSE NOW
+                await Task.Run(() => Statics.DatabaseModel.ForceDatabaseSave());//this makes SO MUCH SENSE NOW
                 IsUsingIO = false;
             }
         }
@@ -192,7 +193,7 @@ namespace EELBALL_TRACKER
                 ); 
             CurrentThrow.ID += 1;
             RecentThrows.Add(t); //Is there a way to automatically add values to array without a call? Like a binding on the UI?
-            await Task.Run(() => DatabaseModel.AppendDatabase(t));
+            await Task.Run(() => Statics.DatabaseModel.AppendDatabase(t));
             IsUsingIO =false;
         }
         private async Task AddToObservableCollectionAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args, string category)
@@ -202,7 +203,7 @@ namespace EELBALL_TRACKER
             
             foreach(string s in args.NewItems)
             {
-                DatabaseModel.AppendCategoryList(category, s);
+                Statics.DatabaseModel.AppendCategoryList(category, s);
             }
             //I like await task.delay so the UI has a chance to flicker, giving an indication that something has changed behind the scenes
             await Task.Delay(20);

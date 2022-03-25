@@ -1,37 +1,61 @@
-﻿using System;
+﻿using EELBALL_TRACKER.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Controls;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+
+
+using System.Threading;
 
 namespace EELBALL_TRACKER.ViewModels
 {
     internal class VMLeaderboard : INotifyPropertyChanged
     {
-        public Point pointFirstPlace = new Point(1,1);
-        public Point pointLastPlace = new Point(100, 100);
-        public PathGeometry pathGeometry;
-        public event PropertyChangedEventHandler PropertyChanged;
+        public Point[] PointList = new Point[]
+        {
+            new Point(0,20),
+            new Point(30,20),
+            new Point(60, 20),
+            new Point(90, 20),
+            new Point(120,20)
+        };
+        
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        public DoubleAnimation MoveContestantPlace;
+        public RelayCommand CmdMoveToPlace { get; set; }
+        public List<string> PlaceList //TODO override add method to add textbox to leaderboardwindow
+        {
+            get => _placeList;
+            set
+            {
+                _placeList = value;
+                OnPropertyRaised("PlaceList");
+            }
+        }  
+        private List<string> _placeList;
         public VMLeaderboard()
         {
-            this.pathGeometry = MoveFromTo(new System.Windows.Point(0,0), new System.Windows.Point(100,100));
-        }
-        public PathGeometry MoveFromTo(System.Windows.Point from, System.Windows.Point to)
-        {
-            PathGeometry pg = new PathGeometry();
-            PathFigure f = new PathFigure();
-            f.StartPoint = from;
-            PolyBezierSegment pb = new PolyBezierSegment();
-            pb.Points.Add(new System.Windows.Point((int)(from.X + 50), ((int)from.Y)));
-            pb.Points.Add(new System.Windows.Point((int)(from.X - 50), ((int)from.Y - 50)));
-            f.Segments.Add(pb);
-            pg.Figures.Add(f);
-            return pg;
             
+            CmdMoveToPlace = new RelayCommand(MoveToPlace);
+        }
+        public void MoveToPlace(string control, int place)
+        {
+
+        }
+
+        private void OnPropertyRaised(string propertyname = null)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
+            }
         }
     }
 }

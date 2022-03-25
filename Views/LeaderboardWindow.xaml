@@ -7,43 +7,42 @@
         mc:Ignorable="d"
         Title="LeaderboardWindow" Height="325" Width="230">
     <Window.Resources>
-        
+        <Style TargetType="TextBox" x:Key="tbx_Move">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="TextBox.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            
+                            
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <local:VMLeaderboard/>
     </Window.DataContext>
-    <Grid>
-        <Grid.Background>
-            <RadialGradientBrush>
-                <GradientStop Color="#FFFF9300"/>
-                <GradientStop Color="#FFB046C9" Offset="1"/>
-            </RadialGradientBrush>
-        </Grid.Background>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="34"/>
-            <RowDefinition Height="205*"/>
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Margin="5,5,4,5">
-            <Label Content="LE" Padding="-1"/>
-            <TextBlock Text="EEL" Foreground="Red"/>
-            <Label Content="DERBOARD" Padding="-1"/>
-        </StackPanel>
-        
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+    <Canvas>
+        <TextBox Text="FIRST"
+                 Name="tbx_First"
+                 Height="39"
+                 Width="100"
+                 Background="red"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource tbx_Move}"
+                 Canvas.Left="{Binding BlockA.X}"
+                 Canvas.Top="{Binding BlockA.Y}">
+        </TextBox>
+        <TextBox Text="SECOND" Style="{StaticResource tbx_Move}" Canvas.Left="-25" Canvas.Top="51" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Rectangle Name="gotopoint" Fill="Black" Canvas.Left="150" Canvas.Top="150" Height="10" Width="10"/>
+    </Canvas>
 
-            
-            <TextBox Grid.Row="1" Text="SECOND"/>
-            <TextBox Grid.Row="2" Text="THIRD"/>
-            <TextBox Grid.Row="3" Text="FOURTH"/>
-            <TextBox Grid.Row="4" Text="FIFTH"/>
-        </Grid>
-        
-    </Grid>
 </Window>

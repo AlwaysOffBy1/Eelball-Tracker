@@ -19,11 +19,12 @@ namespace EELBALL_TRACKER.Views
     /// </summary>
     public partial class LeaderboardWindow : Window
     {
+
+
         public LeaderboardWindow()
         {
             InitializeComponent();
             Loaded += GetCommands;
-
         }
         private void GetCommands(object sender, RoutedEventArgs e)
         {
@@ -35,11 +36,14 @@ namespace EELBALL_TRACKER.Views
                 };
             }
         }
-
         protected override void OnClosed(EventArgs e)
         {
-            base.OnClosed(e);
-            Application.Current.Shutdown();
+            e.Equals(true);
+            this.Hide();
         }
+
+        //UI ANIMATIONS
+        //Not sure where to do these. Could put them in XAML but some of them are pretty complex
+        //The simpler animations will go in XAML, and the complex ones here
     }
 }

@@ -10,7 +10,7 @@ using System.Xml.XPath;
 namespace EELBALL_TRACKER.Models
 {
 
-    internal class DatabaseModel
+    internal struct DatabaseModel
     {
         private string FullPath;
         public List<string> ThrowerList;
@@ -23,13 +23,18 @@ namespace EELBALL_TRACKER.Models
         private readonly int CacheSize = 5;
         private XDocument Doc;
 
-
-
         public DatabaseModel()
         {
             FullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\EelBallData.xml";
+            ThrowerList = new List<string>();
+            TypeList = new List<string>();
+            PlayerList = new List<string>();
+            ThrowCount = 0;
             CacheList = new List<Throw>();
-            CheckForExistingDB();
+            isForceSave = false;
+            Doc = new XDocument(); //hmm
+            Doc = CheckForExistingDB();
+            
             GetUILists();
         }
         private void GetUILists() //get all the throwers, ball types, and players from the XML
@@ -73,6 +78,10 @@ namespace EELBALL_TRACKER.Models
                 ThrowCount = Int32.Parse(Doc.Descendants("TotalThrows").First().Value);
             }   
         }
+        public IList<Throw> DumpThrows()
+        {
+            return new IList<Throw>();
+        }
         public void AppendCategoryList(string category, string value)
         {
             string subCategory = category.Substring(0, category.Length - 1); //This is really lazy. Throws => Throw. Throwers => Thrower. Players => Player. Maybe I should learn about custom references? Serialization?
@@ -82,8 +91,7 @@ namespace EELBALL_TRACKER.Models
                 );
             Doc.Save(FullPath);
         }
-
-        private void CheckForExistingDB()
+        private XDocument CheckForExistingDB()
         {
             if (!File.Exists(FullPath))
             {
@@ -99,7 +107,7 @@ namespace EELBALL_TRACKER.Models
                     }
                 }
             }
-            Doc = XDocument.Load(FullPath);
+            return XDocument.Load(FullPath);
         }
         public void AppendDatabase(Throw t)
         {
