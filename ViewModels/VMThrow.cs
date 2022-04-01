@@ -153,14 +153,11 @@ namespace EELBALL_TRACKER
             CmdLeaderboardShow = new RelayCommand(o => VFLeaderboard.Show());
 
         }
-        public async Task ForceSaveAsync()//TODO ok "returning Task" doesn't nessesarily mean you need to do "return new Task()..." this makes much more sense. Change async voids to async Tasks
+        public async Task ForceSaveAsync()
         {
-            if(Statics.DatabaseModel.CacheList.Count > 0)
-            {
-                IsUsingIO = true;
-                await Task.Run(() => Statics.DatabaseModel.ForceDatabaseSave());//this makes SO MUCH SENSE NOW
-                IsUsingIO = false;
-            }
+            IsUsingIO = true;
+            await Task.Run(() => Statics.DatabaseModel.ForceDatabaseSave());//this makes SO MUCH SENSE NOW
+            IsUsingIO = false;
         }
         public void SelectPaidBy(object stringSource){ CurrentThrow.PaidBy = (string)stringSource;}
         private bool ShouldCommandsBeActive() { return !IsUsingIO; } //reaaaaally just want to bind RelayCommand.CanExecute to a bool, but i dont think thats possible?
@@ -194,10 +191,10 @@ namespace EELBALL_TRACKER
             CurrentThrow.ID += 1;
             RecentThrows.Add(t); //Is there a way to automatically add values to array without a call? Like a binding on the UI?
             await Task.Run(() => Statics.DatabaseModel.AppendDatabase(t));
+            Statics.ThrowsCurrentSession.Add(t);
             IsUsingIO =false;
         }
         private async Task AddToObservableCollectionAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args, string category)
-        //"Void-returning async methods have a specific purpose: to make async event handlers" so this one is okay
         {
             IsUsingIO = true;
             

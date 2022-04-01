@@ -18,5 +18,6 @@ namespace EELBALL_TRACKER
         /// </summary>
         public static List<string> Contestants;
         public static DatabaseModel DatabaseModel;
+        public static List<Throw> ThrowsCurrentSession;
     }
 }

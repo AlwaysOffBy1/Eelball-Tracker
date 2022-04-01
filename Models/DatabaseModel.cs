@@ -17,7 +17,7 @@ namespace EELBALL_TRACKER.Models
         public List<string> TypeList;
         public List<string> PlayerList;
         public int ThrowCount;
-        public List<Throw> CacheList;
+        private List<Throw> CacheList;
         private bool isForceSave;
 
         private readonly int CacheSize = 5;
@@ -36,6 +36,8 @@ namespace EELBALL_TRACKER.Models
             Doc = CheckForExistingDB();
             
             GetUILists();
+            ThrowsToIList();
+
         }
         private void GetUILists() //get all the throwers, ball types, and players from the XML
         {
@@ -78,9 +80,9 @@ namespace EELBALL_TRACKER.Models
                 ThrowCount = Int32.Parse(Doc.Descendants("TotalThrows").First().Value);
             }   
         }
-        public IList<Throw> DumpThrows()
+        private IList<Throw> ThrowsToIList()
         {
-            return new IList<Throw>();
+            
         }
         public void AppendCategoryList(string category, string value)
         {
@@ -153,8 +155,12 @@ namespace EELBALL_TRACKER.Models
         {
             //TODO Is there a more elegant way to do this? Perhaps edit the "set" of the bool to auto append data? Is that good practice for a set to run a function?
             isForceSave = true;
-            AppendDatabase();
+            if(CacheList.Count > 0)
+            {
+                AppendDatabase();
+            }
             isForceSave = false;
         }
     }
 }
+
