@@ -56,9 +56,9 @@
                 <MenuItem Header="Delete" IsEnabled="False"/>
                 <MenuItem Header="Save" Command="{Binding CmdForceSave}"/>
                 <Separator/>
-                <MenuItem Header="Re-open Leaderboard" Command="{Binding CmdLeaderboardShow}"/>
+                <MenuItem Header="Re-open Leaderboard" Command="{Binding CmdLeaderboardShow}" IsEnabled="False"/>
                 <Separator/>
-                <MenuItem Header="Quit"/>
+                <MenuItem Header="Quit" IsEnabled="False"/>
             </MenuItem>
             <MenuItem Header="Debug">
                 <MenuItem IsCheckable="True" Header="DebugMode"/>

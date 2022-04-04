@@ -113,12 +113,12 @@ namespace EELBALL_TRACKER
                     await Task.Run(() => AddToObservableCollectionAsync(sender, args, "Throwers"));
                 };
                 
-            ThrowCount = Statics.DatabaseModel.ThrowCount;
+            
 
             CurrentThrow = new Throw();
-
+            currentThrow.ID = 1;
             RecentThrows = new ObservableCollection<Throw>();
-            CurrentThrow = new Throw(ThrowCount + 1);
+            
             CmdRecordResult = new RelayCommand(o => { _ = RecordResult(o); }, new Func<bool>(() => ShouldCommandsBeActive()) );
             CmdSelectPaidBy = new RelayCommand(o => { SelectPaidBy(o); }); //for a small app like this i know it seems kinda silly to use commands instead of just triggers, but i really need the practice
             CmdAddContestant = new RelayCommand(o => { Contestants.Add(o.ToString()); });
