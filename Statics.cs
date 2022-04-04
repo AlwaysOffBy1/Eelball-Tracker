@@ -16,8 +16,18 @@ namespace EELBALL_TRACKER
         /// Didn't want to do subscriptions since this project is already getting out of hand
         
         /// </summary>
-        public static List<string> Contestants;
-        public static DatabaseModel DatabaseModel;
-        public static List<Throw> ThrowsCurrentSession;
+        
+        //Contestants should be shared amongst Models/VMs
+        public static List<string> Contestants = new List<string>();
+        //
+        public static DatabaseModel DatabaseModel = new DatabaseModel();
+
+        /*
+         * ThrowsFromDB is IEnumerable and gotten at runtime from the database
+         * ThrowsCurrentSession will be added to after each throw.
+         * LINQ will run on ThrowsFromDB AND ThrowsCurrentSession, then be combined for results
+         */
+        public static DatabaseThrows ThrowsFromDB = new DatabaseThrows(new Throw[1]);
+        public static List<Throw> ThrowsCurrentSession = new List<Throw>();
     }
 }

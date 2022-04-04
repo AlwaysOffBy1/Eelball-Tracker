@@ -28,7 +28,7 @@ namespace EELBALL_TRACKER.ViewModels
         private void PushDataAndClose(object stringSource)
         {
             CommitData = stringSource.ToString().Equals("OK");
-            PassData.Invoke(false);
+            PassData.Invoke(CommitData);
             Close?.Invoke();
         }
 

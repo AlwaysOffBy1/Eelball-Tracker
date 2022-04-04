@@ -42,6 +42,22 @@ namespace EELBALL_TRACKER.Views
             this.Hide();
         }
 
+        private void Outside_Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void Border_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                
+            }
+        }
+
         //UI ANIMATIONS
         //Not sure where to do these. Could put them in XAML but some of them are pretty complex
         //The simpler animations will go in XAML, and the complex ones here

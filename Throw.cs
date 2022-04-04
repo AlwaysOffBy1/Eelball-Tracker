@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace EELBALL_TRACKER
 {
-    internal class Throw : INotifyPropertyChanged
+    public class Throw : INotifyPropertyChanged
     {
         //hate how bulky setting properties can be. Can i update the object in the VM so this can thin out? google didnt give a real answer
         public string Thrower
@@ -87,6 +88,14 @@ namespace EELBALL_TRACKER
             }
         }
         private bool _isHasBeenRecorded;
+        public Throw()
+        {
+            Thrower = "EelGuyLIVE";
+            Type = "EELBALL";
+            Result = "Miss";
+            For = "EelGuyLIVE";
+            PaidBy = "EelGuyLIVE";
+        }
         public Throw(int id)
         {
             Thrower = "EelGuyLIVE";
@@ -118,4 +127,5 @@ namespace EELBALL_TRACKER
             }
         }
     }
+
 }

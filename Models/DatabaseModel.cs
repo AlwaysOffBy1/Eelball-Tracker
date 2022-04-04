@@ -19,6 +19,7 @@ namespace EELBALL_TRACKER.Models
         public int ThrowCount;
         private List<Throw> CacheList;
         private bool isForceSave;
+        private DatabaseThrows dbThrows;
 
         private readonly int CacheSize = 5;
         private XDocument Doc;
@@ -33,13 +34,13 @@ namespace EELBALL_TRACKER.Models
             CacheList = new List<Throw>();
             isForceSave = false;
             Doc = new XDocument(); //hmm
+            dbThrows = new DatabaseThrows(new Throw[1]);
             Doc = CheckForExistingDB();
             
-            GetUILists();
-            ThrowsToIList();
+            GetData();
 
         }
-        private void GetUILists() //get all the throwers, ball types, and players from the XML
+        private void GetData() //get all the throwers, ball types, and players from the XML
         {
             if(Doc != null)
             {
@@ -77,12 +78,36 @@ namespace EELBALL_TRACKER.Models
                     .Select(a => a.Value)
                     .ToList();
 
+                dbThrows = new DatabaseThrows(Doc.Descendants("Throw")
+                    .Select(a => new Throw()
+                    {
+                        ID = Int32.Parse(a.Attribute("ID").Value),
+                        ThrowTime = new DateTime(
+                            Int32.Parse(a.Element("Date").Element("Year").Value),
+                            Int32.Parse(a.Element("Date").Element("Month").Value), 
+                            Int32.Parse(a.Element("Date").Element("Day").Value),
+                            Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[0]), //time format = hh:mm:ss.mm
+                            Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[1]), //minute
+                            Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[2].Split('.')[0])  //second
+                        ),
+                        Thrower = a.Element("Thrower").Value,
+                        Type = a.Element("Type").Value,
+                        For = a.Element("For").Value,
+                        PaidBy = a.Element("PaidBy").Value,
+                        Result = a.Element("Result").Value
+                    })
+                    .ToArray());
+
+                    
+
                 ThrowCount = Int32.Parse(Doc.Descendants("TotalThrows").First().Value);
+                Statics.ThrowsFromDB = dbThrows;
+                Statics.Contestants = ThrowerList;
             }   
         }
-        private IList<Throw> ThrowsToIList()
+        private void StaticDBSet()
         {
-            
+
         }
         public void AppendCategoryList(string category, string value)
         {
@@ -119,7 +144,6 @@ namespace EELBALL_TRACKER.Models
         {
             CacheList.AddRange(throws);
             AppendDatabase();
-            ThrowCount += CacheSize;
         }
         private void AppendDatabase()
         {
@@ -134,6 +158,7 @@ namespace EELBALL_TRACKER.Models
                             new XElement("Date",
                                 new XElement("Month", t.ThrowTime.Month),
                                 new XElement("Day", t.ThrowTime.Day),
+                                new XElement("Year", t.ThrowTime.Year),
                                 new XElement("Time", t.ThrowTime.TimeOfDay.ToString())),
                             new XElement("Thrower", t.Thrower),
                             new XElement("Type", t.Type),
@@ -142,12 +167,13 @@ namespace EELBALL_TRACKER.Models
                             new XElement("Result", t.Result)
                             , new XAttribute("ID", t.ID))
                         );
-                    CacheList = new List<Throw>();
+                    ThrowCount++;
+                    Doc.XPathSelectElement("EelBall/TotalThrows").Value = ThrowCount.ToString();
                     t.IsHasBeenRecorded = true;
                 }
-                //XDocument does NOT implement IDisposable and uses xmlreader so simply saving without disposal is ok
-                Doc.Save(FullPath);
-                Thread.Sleep(1000); //yea you thought it took that long to add to an XML 
+                CacheList = new List<Throw>(); //Reset CacheList since its values have been dumped into DB
+                Doc.Save(FullPath); //XDocument does NOT implement IDisposable and uses xmlreader so simply saving without disposal is ok
+                Thread.Sleep(1000); //yea you thought it took that long to add to an XML. TODO make a function that decreases the sleep amount as the DB gets bigger
             }
             Thread.Sleep(20);
         }

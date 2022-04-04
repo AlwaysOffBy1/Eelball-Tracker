@@ -65,17 +65,7 @@
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom" Height="25px">
-            <StatusBar.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                </ItemsPanelTemplate>
-            </StatusBar.ItemsPanel>
-            <StatusBarItem Grid.Column="0">
+            <StatusBarItem Grid.Column="0" Width="500">
                 <StatusBarItem.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <GradientStop Offset=".5" Color="{Binding Path=IsUsingIO, Converter={StaticResource IsDatabaseSavingColor}}"/>
@@ -105,7 +95,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="165"/>
                         <ColumnDefinition Width="165"/>
-                        <ColumnDefinition Width="165"/>
+                        <ColumnDefinition Width="130"/>
                         <ColumnDefinition Width="563*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -116,7 +106,9 @@
                     <Border Grid.Column="0" Grid.Row="0" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
                         <DockPanel>
                             <Label DockPanel.Dock="Top" Content="Thrower" Style="{StaticResource Header}"/>
-                            <ComboBox Margin="2" Text="{Binding CurrentThrow.Thrower}" ItemsSource="{Binding Throwers}"/>
+                            <ComboBox Margin="2" 
+                                      Text="{Binding CurrentThrow.Thrower}" 
+                                      ItemsSource="{Binding Throwers}"/>
                         </DockPanel>
                     </Border>
                     <!--#endregion-->
@@ -163,42 +155,52 @@
                     <!--#endregion-->
                     <!--#region HISTORY-->
                     <Border Grid.Column="3" Grid.RowSpan="2" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
-                        <DockPanel>
-                            <Label DockPanel.Dock="Top" Content="HISTORY" Style="{StaticResource Header}"/>
-                            <ScrollViewer HorizontalScrollBarVisibility="Visible">
-                                <DataGrid AutoGenerateColumns="False" RowHeight="25" Width="auto" CanUserDeleteRows="True"  ItemsSource="{Binding Path=RecentThrows}">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Count" Binding="{Binding ID}"/>
-                                        <DataGridTextColumn Header="Time" Binding="{Binding ThrowTime, StringFormat=M/dd h:mm:ss}"/>
-                                        <DataGridTextColumn Header="Thrower" Binding="{Binding Thrower}"/>
-                                        <DataGridTextColumn Header="For" Binding="{Binding For}"/>
-                                        <DataGridTextColumn Header="Paid By" Binding="{Binding PaidBy}"/>
-                                        <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
-                                        <DataGridTextColumn Header="Result" Binding="{Binding Result}"/>
-                                    </DataGrid.Columns>
-                                    <DataGrid.RowStyle>
-                                        <Style TargetType="DataGridRow">
-                                            <Setter Property="FontWeight" Value="{Binding Converter={StaticResource BoolToBold}, Path=IsHasBeenRecorded}" >
-                                            </Setter>
-                                            <Setter Property="Background">
-                                                <Setter.Value>
-                                                    <MultiBinding Converter="{StaticResource ThrowToBrush}">
-                                                        <Binding Path="Type"/>
-                                                        <Binding Path="Result"/>
-                                                    </MultiBinding>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="Black"/>
-                                                    <Setter Property="Foreground" Value="White"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.RowStyle>
-                                </DataGrid>
-                            </ScrollViewer>
-                        </DockPanel>
+                        <TabControl>
+                            <TabItem Header="Recent History">
+                                <DockPanel Name="dp_RecentHistory">
+                                    
+                                    <ScrollViewer HorizontalScrollBarVisibility="Visible">
+                                        <DataGrid AutoGenerateColumns="False" RowHeight="25" Width="auto" CanUserDeleteRows="True"  ItemsSource="{Binding Path=RecentThrows}">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Count" Binding="{Binding ID}"/>
+                                                <DataGridTextColumn Header="Time" Binding="{Binding ThrowTime, StringFormat=M/dd h:mm:ss}"/>
+                                                <DataGridTextColumn Header="Thrower" Binding="{Binding Thrower}"/>
+                                                <DataGridTextColumn Header="For" Binding="{Binding For}"/>
+                                                <DataGridTextColumn Header="Paid By" Binding="{Binding PaidBy}"/>
+                                                <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+                                                <DataGridTextColumn Header="Result" Binding="{Binding Result}"/>
+                                            </DataGrid.Columns>
+                                            <DataGrid.RowStyle>
+                                                <Style TargetType="DataGridRow">
+                                                    <Setter Property="FontWeight" Value="{Binding Converter={StaticResource BoolToBold}, Path=IsHasBeenRecorded}" >
+                                                    </Setter>
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <MultiBinding Converter="{StaticResource ThrowToBrush}">
+                                                                <Binding Path="Type"/>
+                                                                <Binding Path="Result"/>
+                                                            </MultiBinding>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="Black"/>
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.RowStyle>
+                                        </DataGrid>
+                                    </ScrollViewer>
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Header="Full History" IsEnabled="False">
+                                <DockPanel>
+                                    
+                                </DockPanel>
+                            </TabItem>
+                        </TabControl>
+                        
                     </Border>
                     <!--#endregion-->
                 </Grid>

@@ -5,7 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EELBALL_TRACKER.ViewModels"
         mc:Ignorable="d"
-        Title="LeaderboardWindow" Height="325" Width="230">
+        Title="LeaderboardWindow" Height="325" Width="230" WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="CanResizeWithGrip"
+        >
     <Window.Resources>
         <Style TargetType="TextBox" x:Key="tbx_Move">
             <Setter Property="Width" Value="150"/>
@@ -29,20 +33,12 @@
     <Window.DataContext>
         <local:VMLeaderboard/>
     </Window.DataContext>
-    <Canvas>
-        <TextBox Text="FIRST"
-                 Name="tbx_First"
-                 Height="39"
-                 Width="100"
-                 Background="red"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Top"
-                 Style="{StaticResource tbx_Move}"
-                 Canvas.Left="{Binding BlockA.X}"
-                 Canvas.Top="{Binding BlockA.Y}">
-        </TextBox>
-        <TextBox Text="SECOND" Style="{StaticResource tbx_Move}" Canvas.Left="-25" Canvas.Top="51" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Rectangle Name="gotopoint" Fill="Black" Canvas.Left="150" Canvas.Top="150" Height="10" Width="10"/>
-    </Canvas>
+    
+    <Border Background="Purple" Margin="20" CornerRadius="20" MouseDown="Outside_Border_MouseDown">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="20" Direction="220" RenderingBias="Quality" ShadowDepth="20"/>
+        </Border.Effect>
+        <Border Background="Green" Margin="10" CornerRadius="20" MouseDown="Border_MouseDown_1"></Border>
+    </Border>
 
 </Window>

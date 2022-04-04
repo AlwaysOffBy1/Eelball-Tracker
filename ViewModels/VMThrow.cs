@@ -94,12 +94,6 @@ namespace EELBALL_TRACKER
         public VMThrow()
         {
             //TODO replace event listeners with actions?
-            //Pull in data from XML file and add action listeners to the .add method.
-
-            Statics.DatabaseModel = new DatabaseModel();
-            //VFLeaderboard.Show();
-            
-            
             //My understanding of async/await would tell me that async delegates should contain async methods. async really spreads fast
             Contestants = new ObservableCollection<string>(Statics.DatabaseModel.PlayerList);
                 Contestants.CollectionChanged += async delegate (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
@@ -120,7 +114,8 @@ namespace EELBALL_TRACKER
                 };
                 
             ThrowCount = Statics.DatabaseModel.ThrowCount;
-            
+
+            CurrentThrow = new Throw();
 
             RecentThrows = new ObservableCollection<Throw>();
             CurrentThrow = new Throw(ThrowCount + 1);
