@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         MinHeight="125"
         MinWidth="200"
-        Title="CategoryParamAddWindow" Height="130" Width="110"
+        Title="CategoryParamAddWindow" Height="130" Width="225"
         >
     <Window.Resources>
         <local1:VMAddCategoryParam x:Key="VMAddCategoryParam"/>
@@ -32,9 +32,9 @@
         <Label Grid.Row="1">Category</Label>
         <Label Grid.Column="1" Grid.Row="1">Value</Label>
         <ComboBox Name="cb_Category" Grid.Row="2" Margin="4" SelectedIndex="0" SelectedItem="{Binding Category}">
+            <ComboBoxItem Content="Contestants"/>
             <ComboBoxItem Content="Throwers"/>
             <ComboBoxItem Content="Balls"/>
-            <ComboBoxItem Content="Contestants"/>
             <ComboBoxItem Content="Results" IsEnabled="False"/>
         </ComboBox>
         <TextBox Name="tb_Value" Grid.Column="1" Grid.Row="2" Margin="4" Text="{Binding Value}"/>
