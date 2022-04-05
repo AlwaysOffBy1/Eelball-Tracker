@@ -1,35 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <EelBall>
-	<TotalThrows>0</TotalThrows>
-	<Throwers>
-		<Thrower>EelGuyLIVE</Thrower>
-		<Thrower>GuppyMAGIK</Thrower>
-		<Thrower>republicofcongo</Thrower>
-	</Throwers>
 	<Types>
 		<Type>EELBALL</Type>
 		<Type>SUBBALL</Type>
+		<Type>RAIDBALL</Type>
 	</Types>
+	<TotalThrows>0</TotalThrows>
 	<Contestants>
 		<Contestant>EelGuyLIVE</Contestant>
 		<Contestant>republicofcongo</Contestant>
 		<Contestant>SchwamGames</Contestant>
 		<Contestant>ElementalityNJ</Contestant>
 	</Contestants>
-	<Throws>
-		<Throw ID="0">
-			<Date>
-				<Month>3</Month>
-				<Day>3</Day>
-				<Year>2022</Year>
-				<Time>7:39:00.00</Time>
-			</Date>
-			<Thrower>EelGuyLIVE</Thrower>
-			<Type>EELBall</Type>
-			<For>EelGuyLIVE</For>
-			<PaidBy>EelGuyLIVE</PaidBy>
-			<Result>Miss</Result>
-		</Throw>
-	</Throws>
+	<Throwers>
+		<Thrower ID="GuppyMagik">
+			<Sessions>
 
+			</Sessions>
+		</Thrower>
+		<Thrower ID="republicofcongo">
+			<Sessions>
+
+			</Sessions>
+		</Thrower>
+		<Thrower ID="EelGuyLIVE">
+			<Sessions>
+				<Session>
+					<Date>
+						<Month>4</Month>
+						<Day>5</Day>
+						<Year>2022</Year>
+					</Date>
+					<Throws>
+						<Throw ID="1">
+							<Type>EELBall</Type>
+							<For>EelGuyLIVE</For>
+							<PaidBy>EelGuyLIVE</PaidBy>
+							<Result>Miss</Result>
+							<Time>13:04:00</Time>
+						</Throw>
+					</Throws>
+				</Session>
+				<Session>
+					<Date>
+						<Month>4</Month>
+						<Day>6</Day>
+						<Year>2022</Year>
+					</Date>
+					<Throws>
+						<Throw ID="1">
+							<Type>EELBall</Type>
+							<For>EelGuyLIVE</For>
+							<PaidBy>EelGuyLIVE</PaidBy>
+							<Result>Miss</Result>
+							<Time>13:04:00</Time>
+						</Throw>
+						<Throw ID="2">
+							<Type>EELBall</Type>
+							<For>EelGuyLIVE</For>
+							<PaidBy>EelGuyLIVE</PaidBy>
+							<Result>Miss</Result>
+							<Time>13:04:00</Time>
+						</Throw>
+					</Throws>
+				</Session>
+			</Sessions>
+		</Thrower>
+	</Throwers>
 </EelBall>
