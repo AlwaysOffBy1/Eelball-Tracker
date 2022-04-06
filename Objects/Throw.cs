@@ -8,15 +8,6 @@ namespace EELBALL_TRACKER
     public class Throw : INotifyPropertyChanged
     {
         //hate how bulky setting properties can be. Can i update the object in the VM so this can thin out? google didnt give a real answer
-        public string Thrower
-        {
-            get => _thrower;
-            set
-            {
-                _thrower = value;
-                OnPropertyRaised("Thrower");
-            }
-        }
         private string _thrower;
         public string Type
         {
@@ -90,7 +81,6 @@ namespace EELBALL_TRACKER
         private bool _isHasBeenRecorded;
         public Throw()
         {
-            Thrower = "EelGuyLIVE";
             Type = "EELBALL";
             Result = "Miss";
             For = "EelGuyLIVE";
@@ -98,7 +88,6 @@ namespace EELBALL_TRACKER
         }
         public Throw(int id)
         {
-            Thrower = "EelGuyLIVE";
             Type = "EELBALL";
             Result = "Miss";
             For = "EelGuyLIVE";
@@ -107,9 +96,8 @@ namespace EELBALL_TRACKER
             ID = id;
             IsHasBeenRecorded = false;
         }
-        public Throw(string thrower, string type, string fr, string paidBy, string result, int id)
+        public Throw(string type, string fr, string paidBy, string result, int id)
         {
-            Thrower = thrower;
             Type = type;
             For = fr;
             PaidBy = paidBy;

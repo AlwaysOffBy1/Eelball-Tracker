@@ -102,18 +102,9 @@
                         <RowDefinition Height="70"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <!--#region THROWER BLOCK-->
-                    <Border Grid.Column="0" Grid.Row="0" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
-                        <DockPanel>
-                            <Label DockPanel.Dock="Top" Content="Thrower" Style="{StaticResource Header}"/>
-                            <ComboBox Margin="2" 
-                                      Text="{Binding CurrentThrow.Thrower}" 
-                                      ItemsSource="{Binding Throwers}"/>
-                        </DockPanel>
-                    </Border>
                     <!--#endregion-->
                     <!--#region BALL BLOCK -->
-                    <Border Grid.Column="1" Grid.Row="0" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
+                    <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
                         <DockPanel>
                             <Label DockPanel.Dock="Top" Content="BALL" Grid.Column="1" Style="{StaticResource Header}" />
                             <ComboBox Margin="2" Text="{Binding CurrentThrow.Type, Mode=TwoWay}" ItemsSource="{Binding TypesOfBalls}"/>
@@ -156,7 +147,7 @@
                     <!--#region HISTORY-->
                     <Border Grid.Column="3" Grid.RowSpan="2" Margin="5" BorderThickness="2" BorderBrush="#FF646464">
                         <TabControl>
-                            <TabItem Header="Recent History">
+                            <TabItem Header="Current Sesh">
                                 <DockPanel Name="dp_RecentHistory">
                                     
                                     <ScrollViewer HorizontalScrollBarVisibility="Visible">

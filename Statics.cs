@@ -28,7 +28,7 @@ namespace EELBALL_TRACKER
          * ThrowsCurrentSession will be added to after each throw.
          * LINQ will run on ThrowsFromDB AND ThrowsCurrentSession, then be combined for results
          */
-        public static DatabaseSessions ThrowsFromDB = new DatabaseSessions(new Session[1]);
+        public static SessionsList ThrowsFromDB = new SessionsList(new Session[1]);
         public static List<Throw> ThrowsCurrentSession = new List<Throw>();
     }
 }

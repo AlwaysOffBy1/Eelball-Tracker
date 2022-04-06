@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Runtime.CompilerServices;
 
 namespace EELBALL_TRACKER
 {
@@ -32,7 +33,7 @@ namespace EELBALL_TRACKER
             get{return this.recentThrows;}
             set
             {
-                OnPropertyRaised("RecentThrows");
+                OnPropertyRaised();
                 this.recentThrows = value;
             } 
         }
@@ -43,7 +44,7 @@ namespace EELBALL_TRACKER
             set
             {
                 typesOfBalls = value;
-                OnPropertyRaised("TypesOfBalls");
+                OnPropertyRaised();
             }
         }
         private ObservableCollection<string> typesOfBalls;
@@ -54,7 +55,7 @@ namespace EELBALL_TRACKER
             set
             {
                 throwers = value;
-                OnPropertyRaised("Throwers");
+                OnPropertyRaised();
             }
         }
         private ObservableCollection<string> throwers;
@@ -64,7 +65,7 @@ namespace EELBALL_TRACKER
             get{return contestants;}
             set
             {
-                OnPropertyRaised("Contestants");
+                OnPropertyRaised();
                 this.contestants = value;
             }
         }
@@ -176,7 +177,6 @@ namespace EELBALL_TRACKER
             IsUsingIO = true;
             Throw t = new Throw
                 (
-                    CurrentThrow.Thrower,
                     CurrentThrow.Type,
                     CurrentThrow.For,
                     CurrentThrow.PaidBy,
@@ -203,9 +203,10 @@ namespace EELBALL_TRACKER
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyRaised(string propertyname = null)
+        private void OnPropertyRaised([CallerMemberName] string propertyname = null)
         {
-            if (PropertyChanged != null)
+            var handler = PropertyChanged;
+            if (handler != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
             }

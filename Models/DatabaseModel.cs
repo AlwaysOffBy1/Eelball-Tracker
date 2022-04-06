@@ -16,7 +16,7 @@ namespace EELBALL_TRACKER.Models
         public List<string> ThrowerList;
         public List<string> TypeList;
         public List<string> PlayerList;
-        public DatabaseSessions Sessions;
+        public SessionsList Sessions;
         public Session CurrentSession;
         public int ThrowCount;
         private List<Throw> CacheList;
@@ -35,7 +35,7 @@ namespace EELBALL_TRACKER.Models
             CacheList = new List<Throw>();
             isForceSave = false;
             Doc = new XDocument(); //hmm
-            Sessions = new DatabaseSessions(new Session[1]);
+            Sessions = new SessionsList(new Session[1]);
             CurrentSession = null;
             Doc = CheckForExistingDB();
             
@@ -44,7 +44,6 @@ namespace EELBALL_TRACKER.Models
         }
         private async void GetData() //get all the throwers, ball types, and players from the XML
         {
-            List<Throw> tempThrowList;
             if(Doc != null)
             {
                 //holy dang LINQ is cool/hard
@@ -91,7 +90,6 @@ namespace EELBALL_TRACKER.Models
                             Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[1]), //minute
                             Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[2].Split('.')[0])  //second
                         ),
-                        Thrower = a.Element("Thrower").Value,
                         Type = a.Element("Type").Value,
                         For = a.Element("For").Value,
                         PaidBy = a.Element("PaidBy").Value,
@@ -109,7 +107,7 @@ namespace EELBALL_TRACKER.Models
                 };
 
                 /*
-                Sessions = new DatabaseSessions(Doc.Descendants("Session")
+                Sessions = new SessionsList(Doc.Descendants("Session")
                     .Select(a => new Session()
                     {
                         Date = new DateOnly(
@@ -141,10 +139,6 @@ namespace EELBALL_TRACKER.Models
                 Statics.Contestants = ThrowerList;
             }   
         }
-        private void StaticDBSet()
-        {
-
-        }
         public void AppendCategoryList(string category, string value)
         {
             string subCategory = category.Substring(0, category.Length - 1); //This is really lazy. Throws => Throw. Throwers => Thrower. Players => Player. Maybe I should learn about custom references? Serialization?
@@ -172,13 +166,13 @@ namespace EELBALL_TRACKER.Models
             }
             return XDocument.Load(FullPath);
         }
-        public void AppendDatabase(Throw t)
+        public void AppendDatabase(Session s, Throw t)
         {
-            AppendDatabase(new List<Throw> { t });
+            //TODO
         }
-        public void AppendDatabase(List<Throw> throws) //If theres enough data, add it to the XML database. Otherwise add it to the cache list. 
+        public void AppendDatabase(string thrower, Throw t)
         {
-            CacheList.AddRange(throws);
+            
             AppendDatabase();
         }
         private void AppendDatabase()
@@ -188,8 +182,8 @@ namespace EELBALL_TRACKER.Models
             {
                 foreach (Throw t in CacheList)
                 {
-                    XElement throwNode = Doc.Descendants("Throws")
-                        .LastOrDefault(a => (string)a.Attribute("ID") == t.Thrower); //Get the node
+                    XElement throwNode = Doc.Descendants("Sessions")
+                        .LastOrDefault(a => (string)a.Element("Month") == DateTime.Now.Month.ToString()); //Get the node
                     throwNode.AddAfterSelf(
                         new XElement("Throw",
                             new XElement("Date", 

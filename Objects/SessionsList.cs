@@ -10,35 +10,35 @@ namespace EELBALL_TRACKER
 {
     //https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerable?view=net-6.0
 
-    public class DatabaseSessions : IEnumerable
+    public class SessionsList : IEnumerable
     {
-        private Session[] _dbSessions;
-        public DatabaseSessions(Session[] sessionsArr)
+        private Session[] _dbSessionsList;
+        public SessionsList(Session[] SessionsListArr)
         {
-            _dbSessions = new Session[sessionsArr.Length];
-            for (int i = 0; i < sessionsArr.Length; i++)
+            _dbSessionsList = new Session[SessionsListArr.Length];
+            for (int i = 0; i < SessionsListArr.Length; i++)
             {
-                _dbSessions[i] = sessionsArr[i];
+                _dbSessionsList[i] = SessionsListArr[i];
             }
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }
-        public DatabaseSessionsEnum GetEnumerator()
+        public SessionsListEnum GetEnumerator()
         {
-            return new DatabaseSessionsEnum(_dbSessions);
+            return new SessionsListEnum(_dbSessionsList);
         }
 
     }
-    public class DatabaseSessionsEnum : IEnumerator
+    public class SessionsListEnum : IEnumerator
     {
-        public Session[] _dbSessions;
+        public Session[] _dbSessionsList;
         int position = -1;
 
-        public DatabaseSessionsEnum(Session[] list)
+        public SessionsListEnum(Session[] list)
         {
-            _dbSessions = list;
+            _dbSessionsList = list;
         }
 
         object IEnumerator.Current
@@ -51,7 +51,7 @@ namespace EELBALL_TRACKER
             {
                 try
                 {
-                    return _dbSessions[position];
+                    return _dbSessionsList[position];
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -65,7 +65,7 @@ namespace EELBALL_TRACKER
         public bool MoveNext()
         {
             position++;
-            return position < _dbSessions.Length;
+            return position < _dbSessionsList.Length;
         }
 
         public void Reset()
