@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using EELBALL_TRACKER.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,48 +10,48 @@ namespace EELBALL_TRACKER
 {
     //https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerable?view=net-6.0
 
-    public class DatabaseThrows : IEnumerable
+    public class DatabaseSessions : IEnumerable
     {
-        private Throw[] _dbThrows;
-        public DatabaseThrows(Throw[] throwsArr)
+        private Session[] _dbSessions;
+        public DatabaseSessions(Session[] sessionsArr)
         {
-            _dbThrows = new Throw[throwsArr.Length];
-            for (int i = 0; i < throwsArr.Length; i++)
+            _dbSessions = new Session[sessionsArr.Length];
+            for (int i = 0; i < sessionsArr.Length; i++)
             {
-                _dbThrows[i] = throwsArr[i];
+                _dbSessions[i] = sessionsArr[i];
             }
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }
-        public DatabaseThrowsEnum GetEnumerator()
+        public DatabaseSessionsEnum GetEnumerator()
         {
-            return new DatabaseThrowsEnum(_dbThrows);
+            return new DatabaseSessionsEnum(_dbSessions);
         }
 
     }
-    public class DatabaseThrowsEnum : IEnumerator
+    public class DatabaseSessionsEnum : IEnumerator
     {
-        public Throw[] _dbThrows;
+        public Session[] _dbSessions;
         int position = -1;
 
-        public DatabaseThrowsEnum(Throw[] list)
+        public DatabaseSessionsEnum(Session[] list)
         {
-            _dbThrows= list;
+            _dbSessions = list;
         }
 
         object IEnumerator.Current
         {
             get => Current;
         }
-        public Throw Current
+        public Session Current
         {
             get
             {
                 try
                 {
-                    return _dbThrows[position];
+                    return _dbSessions[position];
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -64,7 +65,7 @@ namespace EELBALL_TRACKER
         public bool MoveNext()
         {
             position++;
-            return position < _dbThrows.Length;
+            return position < _dbSessions.Length;
         }
 
         public void Reset()

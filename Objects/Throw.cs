@@ -58,7 +58,7 @@ namespace EELBALL_TRACKER
             }
         }
         private string _result;
-        public DateTime ThrowTime
+        public TimeOnly ThrowTime
         {
             get => _throwTime;
             set
@@ -67,7 +67,7 @@ namespace EELBALL_TRACKER
                 OnPropertyRaised("ThrowTime");
             }
         }
-        private DateTime _throwTime;
+        private TimeOnly _throwTime;
         public int ID
         {
             get => _id;
@@ -103,7 +103,7 @@ namespace EELBALL_TRACKER
             Result = "Miss";
             For = "EelGuyLIVE";
             PaidBy = "EelGuyLIVE";
-            ThrowTime = DateTime.Now;
+            ThrowTime = TimeOnly.FromDateTime(DateTime.Now);
             ID = id;
             IsHasBeenRecorded = false;
         }
@@ -114,7 +114,7 @@ namespace EELBALL_TRACKER
             For = fr;
             PaidBy = paidBy;
             Result = result;
-            ThrowTime = DateTime.Now;
+            ThrowTime = TimeOnly.FromDateTime(DateTime.Now);
             ID = id;
         }
 

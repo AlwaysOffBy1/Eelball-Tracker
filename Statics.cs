@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EELBALL_TRACKER.Models;
+using EELBALL_TRACKER.Objects;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -27,7 +28,7 @@ namespace EELBALL_TRACKER
          * ThrowsCurrentSession will be added to after each throw.
          * LINQ will run on ThrowsFromDB AND ThrowsCurrentSession, then be combined for results
          */
-        public static DatabaseThrows ThrowsFromDB = new DatabaseThrows(new Throw[1]);
+        public static DatabaseSessions ThrowsFromDB = new DatabaseSessions(new Session[1]);
         public static List<Throw> ThrowsCurrentSession = new List<Throw>();
     }
 }

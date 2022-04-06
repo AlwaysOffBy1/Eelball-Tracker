@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EELBALL_TRACKER.Objects;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,17 +10,17 @@ using System.Xml.XPath;
 
 namespace EELBALL_TRACKER.Models
 {
-
     internal struct DatabaseModel
     {
         private string FullPath;
         public List<string> ThrowerList;
         public List<string> TypeList;
         public List<string> PlayerList;
+        public DatabaseSessions Sessions;
+        public Session CurrentSession;
         public int ThrowCount;
         private List<Throw> CacheList;
         private bool isForceSave;
-        private DatabaseThrows dbThrows;
 
         private readonly int CacheSize = 5;
         private XDocument Doc;
@@ -34,14 +35,16 @@ namespace EELBALL_TRACKER.Models
             CacheList = new List<Throw>();
             isForceSave = false;
             Doc = new XDocument(); //hmm
-            dbThrows = new DatabaseThrows(new Throw[1]);
+            Sessions = new DatabaseSessions(new Session[1]);
+            CurrentSession = null;
             Doc = CheckForExistingDB();
             
             GetData();
 
         }
-        private void GetData() //get all the throwers, ball types, and players from the XML
+        private async void GetData() //get all the throwers, ball types, and players from the XML
         {
+            List<Throw> tempThrowList;
             if(Doc != null)
             {
                 //holy dang LINQ is cool/hard
@@ -78,14 +81,12 @@ namespace EELBALL_TRACKER.Models
                     .Select(a => a.Value)
                     .ToList();
 
-                dbThrows = new DatabaseThrows(Doc.Descendants("Throw")
+                
+                List<Throw> throwList = new List<Throw>(Doc.Descendants("Throw")
                     .Select(a => new Throw()
                     {
                         ID = Int32.Parse(a.Attribute("ID").Value),
-                        ThrowTime = new DateTime(
-                            Int32.Parse(a.Element("Date").Element("Year").Value),
-                            Int32.Parse(a.Element("Date").Element("Month").Value), 
-                            Int32.Parse(a.Element("Date").Element("Day").Value),
+                        ThrowTime = new TimeOnly(
                             Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[0]), //time format = hh:mm:ss.mm
                             Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[1]), //minute
                             Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[2].Split('.')[0])  //second
@@ -98,10 +99,45 @@ namespace EELBALL_TRACKER.Models
                     })
                     .ToArray());
 
-                    
+                CurrentSession = new Session()
+                {
+                    Date = new DateOnly(2022, 1, 1),
+                    Throws = new List<Throw>()
+                    {
+                        new Throw()
+                    }
+                };
+
+                /*
+                Sessions = new DatabaseSessions(Doc.Descendants("Session")
+                    .Select(a => new Session()
+                    {
+                        Date = new DateOnly(
+                            (int)a.Element("Date").Element("Year"),
+                            (int)a.Element("Date").Element("Month"),
+                            (int)a.Element("Date").Element("Day")
+                            ),
+                        Throws = new List<Throw>()
+                        {
+                            new Throw()
+                            {
+                                ID = Int32.Parse(a.Attribute("ID").Value),
+                                ThrowTime = new TimeOnly(
+                                    Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[0]), //time format = hh:mm:ss.mm
+                                    Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[1]), //minute
+                                    Int32.Parse(a.Element("Date").Element("Time").Value.Split(':')[2].Split('.')[0])  //second
+                                ),
+                                Thrower = a.Element("Thrower").Value,
+                                Type = a.Element("Type").Value,
+                                For = a.Element("For").Value,
+                                PaidBy = a.Element("PaidBy").Value,
+                                Result = a.Element("Result").Value
+                            }
+                        }                        
+                    }).ToArray());
+                */
 
                 ThrowCount = Int32.Parse(Doc.Descendants("TotalThrows").First().Value);
-                Statics.ThrowsFromDB = dbThrows;
                 Statics.Contestants = ThrowerList;
             }   
         }
@@ -152,21 +188,21 @@ namespace EELBALL_TRACKER.Models
             {
                 foreach (Throw t in CacheList)
                 {
-                    Doc.XPathSelectElement("EelBall/Throws").Add
-                        (
+                    XElement throwNode = Doc.Descendants("Throws")
+                        .LastOrDefault(a => (string)a.Attribute("ID") == t.Thrower); //Get the node
+                    throwNode.AddAfterSelf(
                         new XElement("Throw",
-                            new XElement("Date",
-                                new XElement("Month", t.ThrowTime.Month),
-                                new XElement("Day", t.ThrowTime.Day),
-                                new XElement("Year", t.ThrowTime.Year),
-                                new XElement("Time", t.ThrowTime.TimeOfDay.ToString())),
-                            new XElement("Thrower", t.Thrower),
-                            new XElement("Type", t.Type),
-                            new XElement("For", t.For),
-                            new XElement("PaidBy", t.PaidBy),
-                            new XElement("Result", t.Result)
-                            , new XAttribute("ID", t.ID))
+                            new XElement("Date", 
+                                new XElement("Time", t.ThrowTime),
+                                new XElement("Type", t.Type),
+                                new XElement("For", t.For),
+                                new XElement("PaidBy", t.PaidBy),
+                                new XElement("Result", t.Result)
+                                ),
+                            new XAttribute("ID", "0")
+                            )
                         );
+
                     ThrowCount++;
                     Doc.XPathSelectElement("EelBall/TotalThrows").Value = ThrowCount.ToString();
                     t.IsHasBeenRecorded = true;
